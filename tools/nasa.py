@@ -218,6 +218,13 @@ def moon_kit():
     (out / "SOURCE.txt").write_text(f"NASA's Scientific Visualization Studio — CGI Moon Kit\n{page_url}\ncolor: {color}\nelevation: {elev}\n")
 
 
+def credit_line(d):
+    m = re.search(r"(?:image )?credit:\s*([^\n<]+)", d.get("description", ""), re.I)
+    if m:
+        return m.group(1).strip().rstrip(".")
+    return d.get("secondary_creator") or d.get("photographer") or "NASA"
+
+
 def fetch_picks():
     picks_file = ROOT / "tools" / "picks.txt"
     if not picks_file.exists():
@@ -243,11 +250,11 @@ def fetch_picks():
         print(nid, "<-", src)
         im = Image.open(io.BytesIO(get(src.replace("http://", "https://")).content)).convert("RGB")
         slug = re.sub(r"[^a-z0-9]+", "-", nid.lower()).strip("-")
-        for w, kb in ((1280, 260), (1920, 480), (2560, 800)):
+        for w, kb in ((640, 90), (1280, 260), (1920, 480), (2560, 800)):
             save_webp(im, out / f"{slug}-{w}.webp", w, max_kb=kb)
         credits[nid] = {"slug": slug, "title": d.get("title", ""), "center": d.get("center", ""),
                         "date": d.get("date_created", "")[:10],
-                        "credit": d.get("secondary_creator") or d.get("photographer") or "NASA",
+                        "credit": credit_line(d),
                         "url": f"https://images.nasa.gov/details/{nid}",
                         "w": im.width, "h": im.height}
     out.mkdir(parents=True, exist_ok=True)
