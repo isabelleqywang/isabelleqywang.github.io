@@ -124,8 +124,7 @@ h1 { font-size: clamp(2.4rem, 6vw, 4.2rem); line-height: 1.1; margin-bottom: 20p
 .when { color: var(--accent); font-size: 0.85rem; }
 .timeline h3 { font-size: 1.25rem; margin: 4px 0 8px; }
 .timeline h3 span { color: var(--muted); font-weight: 400; }
-.timeline ul { padding-left: 18px; color: #c8cde3; }
-.timeline ul li { margin-bottom: 4px; }
+.timeline p { color: #c8cde3; max-width: 720px; }
 
 /* PROJECT CARDS */
 .cards { display: grid; grid-template-columns: repeat(auto-fill, minmax(290px, 1fr)); gap: 22px; }
