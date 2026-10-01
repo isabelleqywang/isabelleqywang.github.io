@@ -4,174 +4,148 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Isabelle Wang</title>
-  <meta name="description" content="Qiuyi (Isabelle) Wang — Computer Science @ NYU. Backend & full-stack developer.">
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <meta name="description" content="Qiuyi (Isabelle) Wang — Computer Science at NYU. Backend and full-stack developer.">
+  <meta name="theme-color" content="#05070f">
+  <link rel="preload" href="fonts/cormorant-garamond-latin-300-normal.woff2" as="font" type="font/woff2" crossorigin>
   <link rel="stylesheet" href="style.css">
 </head>
-<body>
-  <canvas id="stars" aria-hidden="true"></canvas>
+<body class="intro">
+  <canvas id="scene" aria-hidden="true"></canvas>
 
-  <nav class="nav">
-    <a href="#top" class="logo">IW<span>.</span></a>
-    <div class="links">
+  <header class="nav">
+    <a href="#top" class="mark">Isabelle Wang</a>
+    <nav>
       <a href="#about">About</a>
       <a href="#experience">Experience</a>
       <a href="#projects">Projects</a>
       <a href="#skills">Skills</a>
       <a href="#contact">Contact</a>
-    </div>
-  </nav>
+    </nav>
+  </header>
 
   <main>
-    <!-- HERO -->
+    <!-- HERO: the Moon alone first; words arrive on scroll / touch -->
     <section class="hero" id="top">
-      <div class="hero-text">
-        <p class="eyebrow mono">// hello, universe</p>
-        <h1>Qiuyi <span class="accent">(Isabelle)</span> Wang</h1>
-        <p class="tagline">Computer Science @ NYU · Backend &amp; full-stack developer building systems that hold up under real load.</p>
-        <div class="cta">
-          <a class="btn primary" href="#projects">Explore projects</a>
-          <a class="btn" href="https://github.com/isabelleqywang" target="_blank" rel="noopener">GitHub</a>
+      <div class="hero-stage">
+        <svg class="orbit" viewBox="-500 -500 1000 1000" aria-hidden="true">
+          <ellipse rx="490" ry="104" transform="rotate(-12)" />
+          <circle r="2.5" cx="0" cy="0" class="node" transform="rotate(-12) translate(-490 0)" />
+        </svg>
+        <div class="hero-copy">
+          <p class="label">Computer Science · New York University</p>
+          <h1>Qiuyi <em>(Isabelle)</em> Wang</h1>
+          <p class="lede">Backend &amp; full-stack developer building systems that hold up under real load.</p>
         </div>
-      </div>
-      <div class="moon-wrap" aria-hidden="true">
-        <div class="orbit"><div class="satellite"></div></div>
-        <div class="moon">
-          <span class="crater c1"></span><span class="crater c2"></span><span class="crater c3"></span>
-          <span class="crater c4"></span><span class="crater c5"></span><span class="crater c6"></span>
-        </div>
+        <button class="hint" type="button" aria-label="Begin">
+          <span>scroll</span><i></i>
+        </button>
       </div>
     </section>
 
-    <!-- ABOUT -->
-    <section id="about" class="reveal">
-      <h2><span class="phase">🌑</span> About</h2>
-      <div class="about-grid">
-        <p>
-          I'm a Computer Science student at <strong>New York University</strong> (College of Arts and Science, class of 2028).
-          I like the parts of software most people never see — APIs, data models, pipelines, and the debugging
-          that keeps production from falling over. I've shipped backend code for a GHG-reporting platform,
-          automated away hours of manual work at NYU IT, and taught hundreds of students data structures as a TA.
+    <section id="about" class="block">
+      <div class="side"><span class="num">01</span><h2>About</h2></div>
+      <div class="body">
+        <p class="big">
+          I'm a Computer Science student at New York University, class of 2028. I like the parts of software
+          most people never see — APIs, data models, pipelines, and the quiet debugging that keeps production standing.
         </p>
-        <ul class="facts mono">
-          <li><span>location</span> New York, NY</li>
-          <li><span>school</span> NYU · B.A. CS</li>
-          <li><span>grad</span> May 2028</li>
-          <li><span>focus</span> backend · full-stack · security</li>
-        </ul>
+        <dl class="facts">
+          <div><dt>Based in</dt><dd>New York</dd></div>
+          <div><dt>Studying</dt><dd>B.A. Computer Science, NYU</dd></div>
+          <div><dt>Focus</dt><dd>Backend · Full-stack · Security</dd></div>
+        </dl>
       </div>
     </section>
 
-    <!-- EXPERIENCE -->
-    <section id="experience" class="reveal">
-      <h2><span class="phase">🌒</span> Experience</h2>
-      <ol class="timeline">
+    <section id="experience" class="block">
+      <div class="side"><span class="num">02</span><h2>Experience</h2></div>
+      <ol class="body roles">
         <li>
-          <div class="when mono">May 2026 – Sep 2026</div>
-          <h3>Backend Intern <span>· GBCS Group</span></h3>
+          <div class="when">Summer 2026</div>
+          <h3>Backend Intern <span>GBCS Group</span></h3>
           <p>Spent the summer teaching a Django carbon-reporting service to say “no” politely — a validation framework so every error arrives with good manners. Also caught a bug on its way out the door to a client, which is the quietest kind of heroism.</p>
         </li>
         <li>
-          <div class="when mono">Jan 2026 – May 2026</div>
-          <h3>Teaching Assistant <span>· NYU Courant</span></h3>
+          <div class="when">Spring 2026</div>
+          <h3>Teaching Assistant <span>NYU Courant</span></h3>
           <p>Held office hours for 200+ students, where I learned that recursion is best explained twice and linked lists three times. Read a great deal of student code and came out with gentle but firm opinions about Big-O and variable names.</p>
         </li>
         <li>
-          <div class="when mono">Sep 2025 – Jan 2026</div>
-          <h3>Student Technician Intern <span>· NYU Gallatin IT</span></h3>
+          <div class="when">Fall 2025</div>
+          <h3>Student Technician <span>NYU Gallatin IT</span></h3>
           <p>Wrote a small Python pipeline that quietly took over 12 hours a week of spreadsheet copy-pasting. Nobody misses those hours — least of all the person who used to spend them.</p>
         </li>
         <li>
-          <div class="when mono">Aug 2025 – Nov 2025</div>
-          <h3>Full-Stack Developer <span>· HackNYU</span></h3>
+          <div class="when">Fall 2025</div>
+          <h3>Full-Stack Developer <span>HackNYU</span></h3>
           <p>Started on the frontend making things move nicely for 900+ hackers, then wandered into the backend when MongoDB needed a friend. Turns out I like both sides of an API; they just argue differently.</p>
         </li>
         <li>
-          <div class="when mono">Jun 2025 – Aug 2025</div>
-          <h3>Backend Developer Intern <span>· ExamMaster</span></h3>
+          <div class="when">Summer 2025</div>
+          <h3>Backend Developer Intern <span>ExamMaster</span></h3>
           <p>Built the APIs behind an online exam platform, and fixed the audio bug that left 20+ students listening to silence during their listening section. Exams are hard enough without that being part of the test.</p>
         </li>
       </ol>
     </section>
 
-    <!-- PROJECTS -->
-    <section id="projects" class="reveal">
-      <h2><span class="phase">🌓</span> Projects</h2>
-      <div class="cards">
-        <a class="card" href="https://github.com/isabelleqywang/PyAtlas" target="_blank" rel="noopener">
-          <div class="planet p1"></div>
-          <h3>PyAtlas</h3>
-          <p>Point it at a Python repo, get an expandable module map — compound folder/file nodes, aggregated edges, animated layout.</p>
-          <div class="tags mono"><span>React</span><span>Vite</span><span>Cytoscape</span></div>
-        </a>
-        <a class="card" href="https://github.com/isabelleqywang/Runtime-Aware_SBOM_Generator" target="_blank" rel="noopener">
-          <div class="planet p2"></div>
-          <h3>Runtime-Aware SBOM Generator</h3>
-          <p>NYU DTCC VIP project. Combines Syft, otool, and dtruss to catch dynamically loaded dependencies that static analysis misses.</p>
-          <div class="tags mono"><span>Shell</span><span>Security</span><span>JSON</span></div>
-        </a>
-        <a class="card" href="https://ctrl-alt-defend.itch.io/hacknyu2025test" target="_blank" rel="noopener">
-          <div class="planet p3"></div>
-          <h3>Ctrl + Alt + Defend</h3>
-          <p>Hackathon cybersecurity training game — spot phishing, block malicious pop-ups, learn by playing. Built at HackNYU 2025 — playable on itch.io.</p>
-          <div class="tags mono"><span>Ren'Py</span><span>Python</span><span>HTML5</span></div>
-        </a>
-        <div class="card">
-          <div class="planet p4"></div>
-          <h3>NYU GDG Website</h3>
-          <p>Full-stack club site with REST endpoints for member data and event listings.</p>
-          <div class="tags mono"><span>React</span><span>Flask</span><span>SQLite</span></div>
-        </div>
-        <a class="card" href="https://github.com/isabelleqywang/x86-assembly" target="_blank" rel="noopener">
-          <div class="planet p6"></div>
-          <h3>x86 Assembly</h3>
-          <p>Low-level programming exercises in x86 assembly.</p>
-          <div class="tags mono"><span>Assembly</span><span>Systems</span></div>
-        </a>
+    <section id="projects" class="block">
+      <div class="side"><span class="num">03</span><h2>Projects</h2></div>
+      <ul class="body projects">
+        <li><a href="https://github.com/isabelleqywang/PyAtlas" target="_blank" rel="noopener">
+          <span class="p-head"><span class="p-name">PyAtlas</span><span class="p-stack">React · Cytoscape</span></span>
+          <span class="p-desc">Point it at a Python repository and get an expandable map of its modules — folders open, edges aggregate, the layout settles itself.</span>
+        </a></li>
+        <li><a href="https://github.com/isabelleqywang/Runtime-Aware_SBOM_Generator" target="_blank" rel="noopener">
+          <span class="p-head"><span class="p-name">Runtime-Aware SBOM</span><span class="p-stack">Shell · Security</span></span>
+          <span class="p-desc">A software bill of materials that watches programs run, catching the dynamically loaded libraries static analysis never sees.</span>
+        </a></li>
+        <li><a href="https://github.com/isabelleqywang/ctrl-alt-defend" target="_blank" rel="noopener">
+          <span class="p-head"><span class="p-name">Ctrl + Alt + Defend</span><span class="p-stack">Ren'Py · Python</span></span>
+          <span class="p-desc">A HackNYU game about spotting phishing and closing suspicious pop-ups — security training that doesn't feel like training.</span>
+        </a></li>
+        <li><a href="https://github.com/isabelleqywang/x86-assembly" target="_blank" rel="noopener">
+          <span class="p-head"><span class="p-name">x86 Assembly</span><span class="p-stack">Assembly</span></span>
+          <span class="p-desc">Exercises from close to the metal, where every register is accounted for.</span>
+        </a></li>
+        <li><a href="https://github.com/isabelleqywang" target="_blank" rel="noopener">
+          <span class="p-head"><span class="p-name">NYU GDG Website</span><span class="p-stack">React · Flask · SQLite</span></span>
+          <span class="p-desc">A full-stack club site with REST endpoints for members and events.</span>
+        </a></li>
+      </ul>
+    </section>
+
+    <section id="skills" class="block">
+      <div class="side"><span class="num">04</span><h2>Skills</h2></div>
+      <div class="body skills">
+        <div><h3>Languages</h3><p>Python, Java, JavaScript, TypeScript, C, Shell, SQL, HTML, CSS</p></div>
+        <div><h3>Frameworks &amp; tools</h3><p>Django, Flask, React, Node.js, Docker, Git, MySQL, MongoDB, SQLite</p></div>
+        <div><h3>Parallel computing</h3><p>MPI, OpenMP, CUDA</p></div>
       </div>
     </section>
 
-    <!-- SKILLS -->
-    <section id="skills" class="reveal">
-      <h2><span class="phase">🌔</span> Skills</h2>
-      <div class="skills">
-        <div>
-          <h3 class="mono">languages</h3>
-          <div class="chips">
-            <span>Python</span><span>Java</span><span>JavaScript</span><span>TypeScript</span>
-            <span>C</span><span>Shell</span><span>HTML5</span><span>CSS</span><span>SQL</span>
-          </div>
-        </div>
-        <div>
-          <h3 class="mono">frameworks &amp; tools</h3>
-          <div class="chips">
-            <span>Django</span><span>Flask</span><span>React</span><span>Node.js</span><span>Git</span>
-            <span>Docker</span><span>MySQL</span><span>MongoDB</span><span>SQLite</span>
-          </div>
-        </div>
-        <div>
-          <h3 class="mono">parallel computing</h3>
-          <div class="chips"><span>MPI</span><span>OpenMP</span><span>CUDA</span></div>
-        </div>
-      </div>
-    </section>
-
-    <!-- CONTACT -->
-    <section id="contact" class="reveal contact">
-      <h2><span class="phase">🌕</span> Contact</h2>
-      <p>Open to internships and new-grad opportunities. Say hi — I'll reply from Earth.</p>
-      <div class="cta center">
-        <a class="btn primary" href="mailto:isabellewang@nyu.edu">isabellewang@nyu.edu</a>
-        <a class="btn" href="https://www.linkedin.com/in/qiuyiwangisabelle/" target="_blank" rel="noopener">LinkedIn</a>
-        <a class="btn" href="https://github.com/isabelleqywang" target="_blank" rel="noopener">GitHub</a>
+    <section id="contact" class="block contact">
+      <div class="side"><span class="num">05</span><h2>Contact</h2></div>
+      <div class="body">
+        <p class="big">Open to internships and new-grad roles. Say hello — my replies take a little longer than light from the Moon, but not by much.</p>
+        <ul class="links">
+          <li><a href="mailto:isabellewang@nyu.edu">isabellewang@nyu.edu</a></li>
+          <li><a href="https://www.linkedin.com/in/qiuyiwangisabelle/" target="_blank" rel="noopener">LinkedIn</a></li>
+          <li><a href="https://github.com/isabelleqywang" target="_blank" rel="noopener">GitHub</a></li>
+        </ul>
       </div>
     </section>
   </main>
 
-  <footer class="mono">© 2026 Isabelle Wang · made among the stars</footer>
+  <footer>
+    <p>© 2026 Isabelle Wang</p>
+    <p class="credits">
+      Image credit: NASA. Lunar color and elevation maps: NASA's Scientific Visualization Studio,
+      <a href="https://svs.gsfc.nasa.gov/4720" target="_blank" rel="noopener">CGI Moon Kit</a>
+      (LRO LROC &amp; LOLA data). This site is not affiliated with or endorsed by NASA.
+    </p>
+  </footer>
 
-  <script src="script.js"></script>
+  <script type="importmap">{ "imports": { "three": "./vendor/three.module.min.js" } }</script>
+  <script type="module" src="main.js"></script>
 </body>
 </html>
