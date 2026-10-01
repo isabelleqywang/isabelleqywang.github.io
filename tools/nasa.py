@@ -52,14 +52,15 @@ def metadata(nasa_id):
 
 
 def rights_status(item, meta):
-    """'nasa' when nothing suggests a third-party owner, otherwise 'third-party'."""
-    text = " ".join([item.get("description", ""), item.get("secondary_creator", ""),
-                     item.get("photographer", ""), *meta.get("credits", {}).values()])
+    """'nasa' unless something names a third-party owner."""
+    creds = meta.get("credits", {})
+    text = " ".join([item.get("description", ""), *creds.values()])
     low = text.lower()
-    if "©" in text or "copyright" in low or "all rights reserved" in low or "getty" in low or "ap photo" in low:
+    if "©" in text or "all rights reserved" in low or any(w in low for w in ("getty", "ap photo", "reuters", "used with permission")):
         return "third-party"
-    rights = " ".join(v for k, v in meta.get("credits", {}).items() if "Rights" in k or "Copyright" in k)
-    if rights and "nasa" not in rights.lower():
+    ok_words = ("nasa", "unlimited", "public", "for copyright and restrictions")
+    owner_fields = [v for k, v in creds.items() if any(t in k for t in ("Credit", "Rights", "Copyright", "By-line"))]
+    if owner_fields and not any(w in v.lower() for v in owner_fields for w in ok_words):
         return "third-party"
     return "nasa"
 
