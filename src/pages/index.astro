@@ -1,0 +1,132 @@
+---
+import Base from "../layouts/Base.astro";
+import ProjectConstellation from "../components/ProjectConstellation.astro";
+import "../styles/home.css";
+
+const person = {
+  "@context": "https://schema.org",
+  "@type": "Person",
+  name: "Qiuyi (Isabelle) Wang",
+  alternateName: "Isabelle Wang",
+  url: "https://isabelleqywang.github.io/",
+  jobTitle: "Computer Science student",
+  alumniOf: { "@type": "CollegeOrUniversity", name: "New York University" },
+  sameAs: ["https://github.com/isabelleqywang", "https://www.linkedin.com/in/qiuyiwangisabelle/"],
+};
+---
+
+<Base
+  description="Qiuyi (Isabelle) Wang — Computer Science at NYU. Backend and full-stack developer, amateur astrophotographer, occasional writer."
+  current="Home"
+  bodyClass="intro"
+  jsonLd={person}
+>
+  <canvas id="scene" slot="before" aria-hidden="true"></canvas>
+
+  <section class="hero" id="top">
+    <div class="hero-stage">
+      <svg class="orbit" viewBox="-500 -500 1000 1000" aria-hidden="true">
+        <ellipse rx="490" ry="104" transform="rotate(-12)"></ellipse>
+        <circle r="2.5" cx="0" cy="0" class="node" transform="rotate(-12) translate(-490 0)"></circle>
+      </svg>
+      <div class="hero-copy">
+        <p class="label">Computer Science · New York University</p>
+        <h1>Qiuyi <em>(Isabelle)</em> Wang</h1>
+        <p class="lede">Backend &amp; full-stack developer building systems that hold up under real load.</p>
+      </div>
+      <button class="hint" type="button" aria-label="Begin">
+        <span>scroll</span><i></i>
+      </button>
+    </div>
+  </section>
+
+  <section id="about" class="block">
+    <div class="side"><span class="num">01</span><h2>About</h2></div>
+    <div class="body">
+      <p class="big">
+        I'm a Computer Science student at New York University, class of 2028. I like the parts of software
+        most people never see — APIs, data models, pipelines, and the quiet debugging that keeps production standing.
+        After dark I point a camera at the sky.
+      </p>
+      <dl class="facts">
+        <div><dt>Based in</dt><dd>New York</dd></div>
+        <div><dt>Studying</dt><dd>B.A. Computer Science, NYU</dd></div>
+        <div><dt>Focus</dt><dd>Backend · Full-stack · Security</dd></div>
+      </dl>
+      <p class="instruments"><b>Instruments</b>Python, Java, TypeScript, C, SQL · Django, Flask, React, Node.js · Docker, MySQL, MongoDB · MPI, OpenMP, CUDA</p>
+    </div>
+  </section>
+
+  <section id="logbook" class="block">
+    <div class="side"><span class="num">02</span><h2>Logbook</h2></div>
+    <ol class="body log">
+      <li>
+        <p class="meta">Summer 2026</p>
+        <h3>Backend Intern <span>GBCS Group</span></h3>
+        <p>Spent the summer teaching a Django carbon-reporting service to say “no” politely — a validation framework so every error arrives with good manners. Also caught a bug on its way out the door to a client, which is the quietest kind of heroism.</p>
+      </li>
+      <li>
+        <p class="meta">Spring 2026</p>
+        <h3>Teaching Assistant <span>NYU Courant</span></h3>
+        <p>Held office hours for 200+ students, where I learned that recursion is best explained twice and linked lists three times. Read a great deal of student code and came out with gentle but firm opinions about Big-O and variable names.</p>
+      </li>
+      <li>
+        <p class="meta">Fall 2025</p>
+        <h3>Student Technician <span>NYU Gallatin IT</span></h3>
+        <p>Wrote a small Python pipeline that quietly took over 12 hours a week of spreadsheet copy-pasting. Nobody misses those hours — least of all the person who used to spend them.</p>
+      </li>
+      <li>
+        <p class="meta">Fall 2025</p>
+        <h3>Full-Stack Developer <span>HackNYU</span></h3>
+        <p>Started on the frontend making things move nicely for 900+ hackers, then wandered into the backend when MongoDB needed a friend. Turns out I like both sides of an API; they just argue differently.</p>
+      </li>
+      <li>
+        <p class="meta">Summer 2025</p>
+        <h3>Backend Developer Intern <span>ExamMaster</span></h3>
+        <p>Built the APIs behind an online exam platform, and fixed the audio bug that left 20+ students listening to silence during their listening section. Exams are hard enough without that being part of the test.</p>
+      </li>
+    </ol>
+  </section>
+
+  <section id="projects" class="block">
+    <div class="side"><span class="num">03</span><h2>Projects</h2></div>
+    <div class="body">
+      <ProjectConstellation />
+    </div>
+  </section>
+
+  <section id="further" class="block">
+    <div class="side"><span class="num">04</span><h2>Further out</h2></div>
+    <ul class="body further">
+      <li><a href="/voyages/"><span class="t">Voyages</span><span class="meta">Full Moon</span><span class="d">Places I've been, each photograph a star, joined in the order I found them.</span></a></li>
+      <li><a href="/observatory/"><span class="t">Observatory</span><span class="meta">Waning Gibbous</span><span class="d">The night sky through my own lens.</span></a></li>
+      <li><a href="/writing/"><span class="t">Writing</span><span class="meta">Last Quarter</span><span class="d">Project retrospectives, technical notes and reading notes.</span></a></li>
+    </ul>
+  </section>
+
+  <section id="contact" class="block contact">
+    <div class="side"><span class="num">05</span><h2>Contact</h2></div>
+    <div class="body">
+      <p class="big">Open to internships and new-grad roles. Say hello — my replies take a little longer than light from the Moon, but not by much.</p>
+      <ul class="links">
+        <li><a href="mailto:isabellewang@nyu.edu">isabellewang@nyu.edu</a></li>
+        <li><a href="https://www.linkedin.com/in/qiuyiwangisabelle/" target="_blank" rel="noopener">LinkedIn</a></li>
+        <li><a href="https://github.com/isabelleqywang" target="_blank" rel="noopener">GitHub</a></li>
+      </ul>
+    </div>
+  </section>
+
+  <figure class="earthrise">
+    <img
+      src="/assets/img/as08-14-2383-1920.webp"
+      srcset="/assets/img/as08-14-2383-640.webp 640w, /assets/img/as08-14-2383-1280.webp 1280w, /assets/img/as08-14-2383-1920.webp 1920w, /assets/img/as08-14-2383-2560.webp 2560w"
+      sizes="100vw" width="3000" height="3000" loading="lazy" decoding="async"
+      alt="Earth rising above the lunar horizon, photographed from Apollo 8 on 24 December 1968"
+    />
+    <figcaption>Earthrise · Apollo 8 · 24 December 1968</figcaption>
+  </figure>
+</Base>
+
+<script>
+  import "../scripts/sky.js";
+</script>

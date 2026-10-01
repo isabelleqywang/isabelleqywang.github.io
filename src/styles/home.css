@@ -1,0 +1,96 @@
+#scene { position: fixed; inset: 0; width: 100vw; height: 100vh; height: 100lvh; display: block; z-index: 0; }
+
+/* ---------- hero: the Moon alone, words arrive on scroll / touch ---------- */
+.hero { height: 175vh; }
+.hero-stage { position: sticky; top: 0; height: 100vh; height: 100svh; overflow: hidden; }
+.orbit {
+  position: absolute; left: 50%; top: 50%; width: min(118vw, 152vh); aspect-ratio: 1;
+  transform: translate(-50%, -50%); overflow: visible; pointer-events: none;
+  transition: opacity 1.4s ease;
+}
+.orbit ellipse { fill: none; stroke: var(--silver); stroke-width: 1; vector-effect: non-scaling-stroke; opacity: 0.16; }
+.orbit .node { fill: var(--blue); }
+.hero-copy {
+  position: absolute; left: var(--gutter); bottom: clamp(56px, 12vh, 120px); max-width: 640px;
+  transition: opacity 1.8s ease 0.2s, transform 1.8s ease 0.2s;
+}
+.intro .hero-copy { opacity: 0; transform: translateY(16px); }
+.hero-copy .label { margin-bottom: 22px; }
+.hero h1 { font: 300 clamp(44px, 6.6vw, 96px)/0.98 var(--serif); color: var(--silver); letter-spacing: -0.01em; }
+.hero h1 em { font-style: italic; color: var(--muted); }
+.lede { margin-top: 22px; max-width: 30em; font-size: clamp(16px, 1.3vw, 19px); }
+.hint {
+  position: absolute; left: 50%; bottom: 34px; transform: translateX(-50%);
+  background: none; border: 0; color: var(--muted); cursor: pointer;
+  display: flex; flex-direction: column; align-items: center; gap: 12px;
+  font: 400 10px/1 var(--mono); letter-spacing: 0.3em; text-transform: uppercase;
+  opacity: 0; animation: hint-in 1.6s ease 2.4s forwards; transition: opacity 0.8s;
+}
+.hint i { width: 1px; height: 44px; background: linear-gradient(var(--muted), transparent); }
+body:not(.intro) .hint { opacity: 0 !important; pointer-events: none; animation: none; }
+@keyframes hint-in { to { opacity: 0.8; } }
+
+/* ---------- content blocks ---------- */
+.block {
+  display: grid; grid-template-columns: minmax(160px, 1fr) 3fr; gap: 40px;
+  padding: clamp(96px, 16vh, 180px) var(--gutter) 0; max-width: 1320px; margin: 0 auto;
+}
+.side { padding-top: 14px; border-top: 1px solid var(--faint); align-self: start; }
+.num { font: 400 11px/1 var(--mono); color: var(--blue); letter-spacing: 0.2em; }
+.block h2 { font: 300 clamp(30px, 3vw, 40px)/1.1 var(--serif); color: var(--silver); margin-top: 14px; }
+.body { padding-top: 14px; border-top: 1px solid var(--faint); max-width: 760px; }
+.big { font: 300 clamp(22px, 2.2vw, 30px)/1.45 var(--serif); color: var(--silver); }
+
+.facts { display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px; margin-top: 48px; }
+.facts dt { font: 400 10px/1 var(--mono); letter-spacing: 0.2em; text-transform: uppercase; color: var(--muted); margin-bottom: 10px; }
+.facts dd { color: var(--silver); font-size: 15px; }
+.instruments { margin-top: 40px; color: var(--muted); font-size: 15px; max-width: 40em; }
+.instruments b { font: 400 10px/1 var(--mono); letter-spacing: 0.2em; text-transform: uppercase; color: var(--muted); margin-right: 10px; }
+
+.log { list-style: none; display: grid; gap: 44px; }
+.log .meta { margin-bottom: 6px; }
+.log h3 { font: 400 17px/1.4 var(--sans); color: var(--silver); margin-bottom: 8px; }
+.log h3 span { color: var(--muted); font-weight: 300; margin-left: 8px; }
+.log p { max-width: 38em; }
+
+.further { list-style: none; }
+.further li { border-bottom: 1px solid var(--faint); }
+.further a { display: grid; grid-template-columns: 1fr auto; align-items: baseline; gap: 6px 24px; padding: 22px 0; }
+.further .t { font: 300 clamp(26px, 2.6vw, 36px)/1.1 var(--serif); color: var(--silver); transition: color 0.4s; }
+.further .meta { text-align: right; }
+.further .d { grid-column: 1 / -1; color: var(--text); font-size: 15px; }
+.further a:hover .t { color: var(--blue); }
+.further li:first-child a { padding-top: 4px; }
+
+.contact { padding-bottom: clamp(40px, 8vh, 96px); }
+.links { list-style: none; margin-top: 40px; display: flex; flex-wrap: wrap; gap: 14px 36px; }
+.links a { color: var(--silver); border-bottom: 1px solid var(--faint); padding-bottom: 4px; transition: border-color 0.3s, color 0.3s; }
+.links a:hover { color: var(--blue); border-color: var(--blue); }
+
+/* closing frame: Earthrise emerges from the dark */
+.earthrise { position: relative; margin: 0; height: min(100vh, 62vw); overflow: hidden; }
+.earthrise img {
+  width: 100%; height: 100%; object-fit: cover; object-position: 50% 66%; display: block;
+  -webkit-mask-image: linear-gradient(transparent 0%, #000 34%); mask-image: linear-gradient(transparent 0%, #000 34%);
+}
+.earthrise figcaption {
+  position: absolute; left: var(--gutter); bottom: 28px;
+  font: 400 10px/1 var(--mono); letter-spacing: 0.22em; text-transform: uppercase; color: rgba(5, 7, 15, 0.7);
+}
+
+@media (max-width: 760px) {
+  .hero-copy { left: 20px; right: 20px; bottom: 76px; }
+  .hero-copy .label { font-size: 10px; letter-spacing: 0.14em; }
+  .block { grid-template-columns: 1fr; gap: 20px; padding: 96px 20px 0; }
+  .side { border-top: 0; padding-top: 0; }
+  .facts { grid-template-columns: 1fr; gap: 18px; margin-top: 32px; }
+  .log h3 span { display: block; margin-left: 0; }
+  .further a { grid-template-columns: 1fr; }
+  .further .meta { text-align: left; }
+  .links { flex-direction: column; gap: 18px; }
+  .links a { display: inline-block; }
+  .earthrise { height: auto; aspect-ratio: 3 / 4; }
+  .earthrise img { object-position: 57% 60%; transform: scale(1.3); transform-origin: 57% 52%; }
+  .earthrise figcaption { left: 20px; bottom: 18px; }
+}
+@media (prefers-reduced-motion: reduce) { .hint { opacity: 0.8; } }

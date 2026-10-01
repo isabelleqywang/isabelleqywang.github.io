@@ -187,7 +187,7 @@ def save_webp(im, path, width, max_kb=None, quality=82):
 
 
 def moon_kit():
-    out = ROOT / "assets" / "moon"
+    out = ROOT / "public" / "assets" / "moon"
     if (out / "moon-color-4k.webp").exists():
         return
     page_url = "https://svs.gsfc.nasa.gov/4720"
@@ -232,7 +232,7 @@ def fetch_picks():
     ids = [l.strip() for l in picks_file.read_text().splitlines() if l.strip()]
     if not ids:
         return
-    out = ROOT / "assets" / "img"
+    out = ROOT / "public" / "assets" / "img"
     credits_path = out / "credits.json"
     credits = json.loads(credits_path.read_text()) if credits_path.exists() else {}
     for nid in ids:

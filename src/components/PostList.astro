@@ -1,0 +1,38 @@
+---
+import type { Post } from "../lib/posts";
+import { formatDate, isoDate, tagLabel } from "../lib/posts";
+
+interface Props { posts: Post[] }
+const { posts } = Astro.props;
+---
+
+{posts.length === 0 ? (
+  <p class="empty">Nothing here yet — the first entry is still being written.</p>
+) : (
+  <ol class="posts">
+    {posts.map((p) => (
+      <li>
+        <article>
+          <p class="meta"><time datetime={isoDate(p.data.date)}>{formatDate(p.data.date)}</time></p>
+          <h2><a href={`/writing/${p.id}/`}>{p.data.title}</a></h2>
+          <p class="summary">{p.data.summary}</p>
+          {p.data.tags.length > 0 && (
+            <ul class="tags">{p.data.tags.map((t) => <li><a href={`/writing/tags/${t}/`}>{tagLabel(t)}</a></li>)}</ul>
+          )}
+        </article>
+      </li>
+    ))}
+  </ol>
+)}
+
+<style>
+  .posts { list-style: none; max-width: 820px; }
+  .posts > li { padding: 34px 0; border-top: 1px solid var(--faint); }
+  h2 { font: 300 clamp(28px, 2.8vw, 38px)/1.15 var(--serif); color: var(--silver); margin: 8px 0 12px; }
+  h2 a:hover { color: var(--blue); }
+  .summary { max-width: 38em; }
+  .tags { list-style: none; display: flex; flex-wrap: wrap; gap: 6px 18px; margin-top: 14px; }
+  .tags a { font: 400 11px/1 var(--mono); letter-spacing: 0.08em; color: var(--muted); }
+  .tags a:hover { color: var(--blue); }
+  .empty { color: var(--muted); }
+</style>

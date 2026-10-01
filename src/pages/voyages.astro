@@ -1,0 +1,200 @@
+---
+import { getCollection } from "astro:content";
+import { Picture } from "astro:assets";
+import Base from "../layouts/Base.astro";
+
+const stops = (await getCollection("voyages")).sort((a, b) => a.data.date.valueOf() - b.data.date.valueOf());
+
+// stops without a hand-placed position drift along a gentle wave across the sky
+const placed = stops.map((s, i) => {
+  const n = Math.max(1, stops.length - 1);
+  return {
+    ...s,
+    x: s.data.x ?? 14 + (72 * i) / n,
+    y: s.data.y ?? 52 + 20 * Math.sin(i * 1.35 + 0.4),
+  };
+});
+
+// a fixed, seeded field of faint stars so every visit sees the same sky
+let seed = 7;
+const rand = () => ((seed = (seed * 16807) % 2147483647) / 2147483647);
+const field = Array.from({ length: 240 }, () => ({ x: rand() * 100, y: rand() * 100, r: 0.6 + rand() * rand() * 1.6, o: 0.25 + rand() * 0.6 }));
+
+const fmt = (d: Date) => d.toLocaleDateString("en-US", { month: "short", year: "numeric", timeZone: "UTC" });
+---
+
+<Base
+  title="Voyages"
+  description="Travel photographs by Isabelle Wang, arranged as a constellation in the order they were taken."
+  current="Voyages"
+>
+  <section class="stage" aria-labelledby="voyages-title">
+    <div class="world" data-world>
+      <div class="nebula" aria-hidden="true"></div>
+      <svg class="field" viewBox="0 0 100 100" preserveAspectRatio="none" aria-hidden="true">
+        {field.map((s) => <circle cx={s.x} cy={s.y} r={s.r / 10} opacity={s.o} />)}
+      </svg>
+      <svg class="route" viewBox="0 0 100 100" preserveAspectRatio="none" aria-hidden="true">
+        <polyline points={placed.map((p) => `${p.x},${p.y}`).join(" ")} />
+      </svg>
+      {placed.map((p, i) => (
+        <button
+          type="button" class="stop" data-index={i} style={`--x:${p.x};--y:${p.y}`}
+          aria-label={`${p.data.place}, ${fmt(p.data.date)} — open photograph`}
+        >
+          <span class="star" aria-hidden="true"></span>
+          <span class="tag" aria-hidden="true"><span class="place">{p.data.place}</span><span class="meta">{fmt(p.data.date)}</span></span>
+        </button>
+      ))}
+    </div>
+
+    <header class="intro-copy">
+      <p class="label">Full Moon · Voyages</p>
+      <h1 id="voyages-title">Voyages</h1>
+      <p>Every photograph is a star, joined to the next in the order I found them. Choose one to fly closer.</p>
+    </header>
+
+    <div class="viewer" data-viewer hidden>
+      {placed.map((p, i) => (
+        <figure class="shot" data-shot={i} hidden>
+          <Picture src={p.data.photo} alt={p.data.alt} widths={[640, 1024, 1600]} sizes="(max-width: 760px) 92vw, 70vw" formats={["avif", "webp"]} loading="lazy" />
+          <figcaption>
+            <span class="place">{p.data.place}</span>
+            <span class="meta">{fmt(p.data.date)} · {String(i + 1).padStart(2, "0")} / {String(placed.length).padStart(2, "0")}</span>
+            {p.data.caption && <span class="cap">{p.data.caption}</span>}
+          </figcaption>
+        </figure>
+      ))}
+      <div class="controls">
+        <button type="button" data-prev aria-label="Previous stop">←</button>
+        <button type="button" data-close aria-label="Back to the sky">Back to the sky</button>
+        <button type="button" data-next aria-label="Next stop">→</button>
+      </div>
+    </div>
+  </section>
+</Base>
+
+<script>
+  const stage = document.querySelector<HTMLElement>(".stage")!;
+  const world = document.querySelector<HTMLElement>("[data-world]")!;
+  const viewer = document.querySelector<HTMLElement>("[data-viewer]")!;
+  const stops = [...document.querySelectorAll<HTMLButtonElement>(".stop")];
+  const shots = [...document.querySelectorAll<HTMLElement>("[data-shot]")];
+  const reduced = matchMedia("(prefers-reduced-motion: reduce)").matches;
+  const FLY = reduced ? 0 : 1400;
+  let current = -1;
+  let timer: number | undefined;
+
+  function flyTo(i: number) {
+    const s = stops[i];
+    const x = Number(s.style.getPropertyValue("--x")), y = Number(s.style.getPropertyValue("--y"));
+    world.style.transformOrigin = `${x}% ${y}%`;
+    world.style.transform = `translate(${50 - x}%, ${50 - y}%) scale(${innerWidth < 760 ? 2.2 : 2.8})`;
+    stage.classList.add("zoomed");
+  }
+
+  function open(i: number) {
+    clearTimeout(timer);
+    const travelling = current !== -1;
+    current = (i + stops.length) % stops.length;
+    shots.forEach((el, k) => (el.hidden = k !== current));
+    viewer.classList.remove("shown");
+    flyTo(current);
+    timer = window.setTimeout(() => {
+      viewer.hidden = false;
+      requestAnimationFrame(() => viewer.classList.add("shown"));
+      viewer.querySelector<HTMLButtonElement>("[data-close]")!.focus({ preventScroll: true });
+    }, travelling ? FLY * 0.7 : FLY * 0.85);
+  }
+
+  function close() {
+    if (current === -1) return;
+    clearTimeout(timer);
+    viewer.classList.remove("shown");
+    const back = stops[current];
+    current = -1;
+    timer = window.setTimeout(() => {
+      viewer.hidden = true;
+      world.style.transform = "";
+      stage.classList.remove("zoomed");
+      back.focus({ preventScroll: true });
+    }, reduced ? 0 : 450);
+  }
+
+  stops.forEach((s, i) => s.addEventListener("click", () => open(i)));
+  viewer.addEventListener("click", (e) => { if (e.target === viewer) close(); });
+  viewer.querySelector("[data-close]")!.addEventListener("click", close);
+  viewer.querySelector("[data-prev]")!.addEventListener("click", () => open(current - 1));
+  viewer.querySelector("[data-next]")!.addEventListener("click", () => open(current + 1));
+  addEventListener("keydown", (e) => {
+    if (current === -1) return;
+    if (e.key === "Escape") close();
+    if (e.key === "ArrowRight") open(current + 1);
+    if (e.key === "ArrowLeft") open(current - 1);
+  });
+</script>
+
+<style>
+  .stage { position: relative; height: 100vh; height: 100svh; min-height: 560px; overflow: hidden; }
+  .world {
+    position: absolute; inset: 0;
+    transition: transform 1.4s cubic-bezier(0.65, 0, 0.2, 1);
+    will-change: transform;
+  }
+  /* soft, cold nebula — the only "painted" layer in the site */
+  .nebula {
+    position: absolute; inset: -10%;
+    background:
+      radial-gradient(ellipse 38% 26% at 30% 42%, rgba(120, 150, 210, 0.13), transparent 70%),
+      radial-gradient(ellipse 30% 22% at 66% 60%, rgba(160, 180, 220, 0.09), transparent 70%),
+      radial-gradient(ellipse 50% 30% at 52% 50%, rgba(70, 100, 170, 0.12), transparent 75%);
+    filter: blur(20px);
+  }
+  .field, .route { position: absolute; inset: 0; width: 100%; height: 100%; }
+  .field circle { fill: #dfe3ea; }
+  .route polyline { fill: none; stroke: var(--silver); stroke-width: 1; vector-effect: non-scaling-stroke; opacity: 0.22; }
+
+  .stop {
+    position: absolute; left: calc(var(--x) * 1%); top: calc(var(--y) * 1%); transform: translate(-50%, -50%);
+    background: none; border: 0; padding: 16px; cursor: pointer; color: inherit;
+  }
+  .star {
+    display: block; width: 9px; height: 9px; border-radius: 50%;
+    background: radial-gradient(circle, #fff 0 32%, rgba(223, 227, 234, 0.5) 48%, transparent 72%);
+  }
+  .stop:hover .star, .stop:focus-visible .star { box-shadow: 0 0 0 7px rgba(140, 180, 255, 0), 0 0 0 8px rgba(140, 180, 255, 0.5); }
+  .tag {
+    position: absolute; left: 50%; top: calc(100% - 6px); transform: translateX(-50%);
+    display: grid; justify-items: center; gap: 2px; white-space: nowrap; transition: opacity 0.5s ease;
+  }
+  .tag .place { font: 300 16px/1.2 var(--serif); color: var(--silver); }
+  .tag .meta { font-size: 10px; }
+  .zoomed .tag { opacity: 0; }
+
+  .intro-copy { position: absolute; left: var(--gutter); top: clamp(110px, 18vh, 170px); max-width: 26em; transition: opacity 0.6s ease; pointer-events: none; }
+  .intro-copy h1 { font: 300 clamp(44px, 6vw, 84px)/1 var(--serif); color: var(--silver); margin-top: 16px; }
+  .intro-copy p:last-child { margin-top: 16px; color: var(--text); }
+  .zoomed .intro-copy { opacity: 0; }
+
+  .viewer {
+    position: absolute; inset: 0; z-index: 5; display: grid; place-items: center; padding: 84px 20px 28px;
+    opacity: 0; transition: opacity 0.6s ease; cursor: zoom-out;
+  }
+  .viewer.shown { opacity: 1; }
+  .shot { display: grid; gap: 14px; justify-items: center; cursor: default; transform: scale(0.94); transition: transform 0.8s cubic-bezier(0.2, 0.7, 0.2, 1); }
+  .viewer.shown .shot { transform: none; }
+  .shot :global(img) { max-height: 66vh; width: auto; max-width: min(92vw, 1100px); display: block; box-shadow: 0 30px 80px rgba(0, 0, 0, 0.6); }
+  .shot figcaption { display: grid; justify-items: center; gap: 4px; text-align: center; }
+  .shot .place { font: 300 clamp(26px, 2.6vw, 34px)/1.1 var(--serif); color: var(--silver); }
+  .shot .cap { color: var(--text); font-size: 15px; max-width: 34em; }
+  .controls { position: absolute; bottom: 26px; left: 0; right: 0; display: flex; justify-content: center; gap: 28px; cursor: default; }
+  .controls button { background: none; border: 0; color: var(--muted); cursor: pointer; font: 400 11px/1 var(--mono); letter-spacing: 0.2em; text-transform: uppercase; padding: 8px; }
+  .controls button:hover { color: var(--silver); }
+  .controls [data-prev], .controls [data-next] { font-size: 16px; letter-spacing: 0; }
+
+  @media (max-width: 760px) {
+    .intro-copy { left: 20px; right: 20px; top: 92px; }
+    .tag .place { font-size: 14px; }
+    .shot :global(img) { max-height: 56vh; }
+  }
+</style>

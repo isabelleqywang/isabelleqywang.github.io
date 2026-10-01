@@ -1,0 +1,66 @@
+@font-face { font-family: "Cormorant"; src: url(/fonts/cormorant-garamond-latin-300-normal.woff2) format("woff2"); font-weight: 300; font-display: swap; }
+@font-face { font-family: "Cormorant"; src: url(/fonts/cormorant-garamond-latin-300-italic.woff2) format("woff2"); font-weight: 300; font-style: italic; font-display: swap; }
+@font-face { font-family: "Cormorant"; src: url(/fonts/cormorant-garamond-latin-400-normal.woff2) format("woff2"); font-weight: 400; font-display: swap; }
+@font-face { font-family: "Inter"; src: url(/fonts/inter-latin-300-normal.woff2) format("woff2"); font-weight: 300; font-display: swap; }
+@font-face { font-family: "Inter"; src: url(/fonts/inter-latin-400-normal.woff2) format("woff2"); font-weight: 400; font-display: swap; }
+@font-face { font-family: "Inter"; src: url(/fonts/inter-latin-500-normal.woff2) format("woff2"); font-weight: 500; font-display: swap; }
+@font-face { font-family: "Mono"; src: url(/fonts/jetbrains-mono-latin-400-normal.woff2) format("woff2"); font-weight: 400; font-display: swap; }
+
+:root {
+  --bg: #05070f;
+  --bg-2: #0b1230;
+  --silver: #dfe3ea;
+  --text: #c9ced8;
+  --muted: #7d8597;
+  --faint: rgba(223, 227, 234, 0.12);
+  --blue: #8cb4ff;
+  --serif: "Cormorant", "Cormorant Garamond", Georgia, serif;
+  --sans: "Inter", system-ui, -apple-system, sans-serif;
+  --mono: "Mono", ui-monospace, monospace;
+  --gutter: clamp(20px, 6vw, 96px);
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+[hidden] { display: none !important; }
+html { scroll-behavior: smooth; -webkit-text-size-adjust: 100%; overflow-x: clip; }
+body {
+  min-height: 100vh;
+  background: linear-gradient(180deg, var(--bg) 0%, var(--bg-2) 55%, var(--bg) 100%) var(--bg);
+  color: var(--text);
+  font: 300 17px/1.7 var(--sans);
+  -webkit-font-smoothing: antialiased;
+}
+a { color: inherit; text-decoration: none; }
+img { max-width: 100%; height: auto; }
+::selection { background: rgba(140, 180, 255, 0.3); }
+:focus-visible { outline: 1px solid var(--blue); outline-offset: 3px; }
+
+main, footer { position: relative; z-index: 2; }
+
+/* shared type */
+.label { font: 400 11px/1 var(--mono); letter-spacing: 0.22em; text-transform: uppercase; color: var(--blue); }
+.meta { font: 400 11px/1.6 var(--mono); letter-spacing: 0.08em; color: var(--muted); }
+.serif { font-family: var(--serif); font-weight: 300; }
+
+/* page intro used by the inner pages */
+.page-head { padding: clamp(140px, 22vh, 220px) var(--gutter) clamp(40px, 8vh, 80px); max-width: 1320px; margin: 0 auto; }
+.page-head h1 { font: 300 clamp(44px, 6vw, 84px)/1 var(--serif); color: var(--silver); margin-top: 18px; }
+.page-head p { margin-top: 20px; max-width: 34em; color: var(--text); }
+
+/* footer */
+.site-footer { padding: 40px var(--gutter) 48px; background: #000; font-size: 12px; color: var(--muted); display: grid; gap: 10px; }
+.site-footer .inner { max-width: 1320px; margin: 0 auto; width: 100%; display: grid; gap: 10px; }
+.site-footer ul { list-style: none; display: grid; gap: 4px; }
+.site-footer a { border-bottom: 1px solid var(--faint); }
+.site-footer .row { display: flex; flex-wrap: wrap; gap: 8px 24px; }
+
+@media (max-width: 760px) {
+  body { font-size: 16px; }
+  .page-head { padding: 120px 20px 40px; }
+  .site-footer { padding: 32px 20px 40px; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+  *, *::before, *::after { transition: none !important; animation: none !important; }
+}

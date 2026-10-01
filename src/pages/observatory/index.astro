@@ -1,0 +1,96 @@
+---
+import { getCollection, render } from "astro:content";
+import { Picture, getImage } from "astro:assets";
+import Base from "../../layouts/Base.astro";
+
+const entries = (await getCollection("observatory")).sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf());
+const items = await Promise.all(
+  entries.map(async (e) => ({
+    e,
+    Content: (await render(e)).Content,
+    full: await getImage({ src: e.data.image, width: Math.min(2400, e.data.image.width), format: "webp" }),
+  }))
+);
+const fmt = (d: Date) => d.toLocaleDateString("en-US", { day: "numeric", month: "long", year: "numeric", timeZone: "UTC" });
+---
+
+<Base
+  title="Observatory"
+  description="Astrophotography by Isabelle Wang — galaxies, nebulae and the Moon, with an observing log for each image."
+  current="Observatory"
+>
+  <header class="page-head">
+    <p class="label">Waning Gibbous · Observatory</p>
+    <h1>Observatory</h1>
+    <p>The night sky through my own lens, each frame with its observing log. Select a photograph to see it larger.</p>
+  </header>
+
+  <ol class="plates">
+    {items.map(({ e, Content, full }, i) => (
+      <li class:list={["plate", { flip: i % 2 === 1 }]}>
+        <button type="button" class="frame" data-full={full.src} data-alt={e.data.alt} aria-label={`View ${e.data.title} larger`}>
+          <Picture src={e.data.image} alt={e.data.alt} widths={[640, 1024, 1600]} sizes="(max-width: 760px) 100vw, 58vw" formats={["avif", "webp"]} loading={i === 0 ? "eager" : "lazy"} />
+        </button>
+        <div class="log">
+          <p class="meta">Plate {String(items.length - i).padStart(2, "0")}</p>
+          <h2>{e.data.title}</h2>
+          <dl>
+            <div><dt>Target</dt><dd>{e.data.target}</dd></div>
+            <div><dt>Date</dt><dd><time datetime={e.data.date.toISOString().slice(0, 10)}>{fmt(e.data.date)}</time></dd></div>
+            {e.data.location && <div><dt>Site</dt><dd>{e.data.location}</dd></div>}
+            {e.data.equipment && <div><dt>Equipment</dt><dd>{e.data.equipment}</dd></div>}
+            {e.data.exposure && <div><dt>Exposure</dt><dd>{e.data.exposure}</dd></div>}
+            {e.data.credit && <div><dt>Credit</dt><dd>{e.data.credit}</dd></div>}
+          </dl>
+          <div class="notes"><Content /></div>
+        </div>
+      </li>
+    ))}
+  </ol>
+
+  <dialog class="lightbox" aria-label="Photograph">
+    <img alt="" />
+    <button type="button" class="close">Close</button>
+  </dialog>
+</Base>
+
+<script>
+  const dlg = document.querySelector<HTMLDialogElement>(".lightbox")!;
+  const img = dlg.querySelector("img")!;
+  document.querySelectorAll<HTMLButtonElement>(".frame").forEach((b) =>
+    b.addEventListener("click", () => {
+      img.src = b.dataset.full!;
+      img.alt = b.dataset.alt!;
+      dlg.showModal();
+    })
+  );
+  dlg.addEventListener("click", () => dlg.close());
+</script>
+
+<style>
+  .plates { list-style: none; max-width: 1320px; margin: 0 auto; padding: 0 var(--gutter) clamp(80px, 14vh, 160px); display: grid; gap: clamp(80px, 14vh, 160px); }
+  .plate { display: grid; grid-template-columns: 7fr 4fr; gap: clamp(28px, 4vw, 64px); align-items: end; }
+  .plate.flip { grid-template-columns: 4fr 7fr; }
+  .plate.flip .frame { order: 2; }
+  .frame { background: none; border: 0; padding: 0; cursor: zoom-in; display: block; }
+  .frame :global(img) { width: 100%; height: auto; display: block; }
+  .log { padding-bottom: 6px; }
+  .log h2 { font: 300 clamp(30px, 3vw, 42px)/1.1 var(--serif); color: var(--silver); margin: 10px 0 22px; }
+  dl { display: grid; gap: 12px; border-top: 1px solid var(--faint); padding-top: 18px; }
+  dl div { display: grid; grid-template-columns: 7.5em 1fr; gap: 12px; }
+  dt { font: 400 10px/1.9 var(--mono); letter-spacing: 0.2em; text-transform: uppercase; color: var(--muted); }
+  dd { font-size: 15px; color: var(--silver); }
+  .notes { margin-top: 22px; font-size: 15px; }
+  .notes :global(p + p) { margin-top: 0.8em; }
+
+  .lightbox { border: 0; padding: 0; background: transparent; max-width: 100vw; max-height: 100vh; width: 100vw; height: 100vh; cursor: zoom-out; }
+  .lightbox::backdrop { background: rgba(3, 4, 9, 0.94); }
+  .lightbox img { width: 100%; height: 100%; object-fit: contain; padding: 4vh 4vw; }
+  .close { position: absolute; top: 22px; right: 26px; background: none; border: 0; color: var(--muted); font: 400 11px/1 var(--mono); letter-spacing: 0.2em; text-transform: uppercase; cursor: pointer; }
+
+  @media (max-width: 760px) {
+    .plates { padding: 0 20px 96px; gap: 80px; }
+    .plate, .plate.flip { grid-template-columns: 1fr; }
+    .plate.flip .frame { order: 0; }
+  }
+</style>

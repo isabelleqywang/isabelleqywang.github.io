@@ -1,0 +1,27 @@
+---
+import Base from "../../../layouts/Base.astro";
+import PostList from "../../../components/PostList.astro";
+import { getPosts, tagLabel } from "../../../lib/posts";
+
+export async function getStaticPaths() {
+  const posts = await getPosts();
+  const tags = [...new Set(posts.flatMap((p) => p.data.tags))];
+  return tags.map((tag) => ({ params: { tag }, props: { posts: posts.filter((p) => p.data.tags.includes(tag)) } }));
+}
+const { tag } = Astro.params;
+const { posts } = Astro.props;
+---
+
+<Base title={`Writing on ${tagLabel(tag)}`} description={`Posts by Isabelle Wang tagged “${tagLabel(tag)}”.`} current="Writing">
+  <header class="page-head">
+    <p class="label"><a href="/writing/">Writing</a> · Topic</p>
+    <h1>{tagLabel(tag)}</h1>
+  </header>
+  <div class="wrap"><PostList posts={posts} /></div>
+</Base>
+
+<style>
+  .wrap { max-width: 1320px; margin: 0 auto; padding: 0 var(--gutter) clamp(96px, 16vh, 160px); }
+  .page-head h1 { text-transform: capitalize; }
+  @media (max-width: 760px) { .wrap { padding: 0 20px 96px; } }
+</style>

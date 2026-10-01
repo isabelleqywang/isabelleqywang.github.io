@@ -1,0 +1,35 @@
+---
+import Base from "../../layouts/Base.astro";
+import PostList from "../../components/PostList.astro";
+import { getPosts, tagLabel } from "../../lib/posts";
+
+const posts = await getPosts();
+const tags = [...new Set(posts.flatMap((p) => p.data.tags))].sort();
+---
+
+<Base
+  title="Writing"
+  description="Writing by Isabelle Wang — project retrospectives, technical notes on backend engineering, and reading notes."
+  current="Writing"
+>
+  <header class="page-head">
+    <p class="label">Last Quarter · Writing</p>
+    <h1>Writing</h1>
+    <p>Project retrospectives, technical notes and reading notes. Also available as an <a class="u" href="/rss.xml">RSS feed</a>.</p>
+    {tags.length > 0 && (
+      <nav class="tagnav" aria-label="Topics">
+        {tags.map((t) => <a href={`/writing/tags/${t}/`}>{tagLabel(t)}</a>)}
+      </nav>
+    )}
+  </header>
+  <div class="wrap"><PostList posts={posts} /></div>
+</Base>
+
+<style>
+  .wrap { max-width: 1320px; margin: 0 auto; padding: 0 var(--gutter) clamp(96px, 16vh, 160px); }
+  .u { border-bottom: 1px solid var(--faint); color: var(--silver); }
+  .tagnav { display: flex; flex-wrap: wrap; gap: 8px 22px; margin-top: 28px; }
+  .tagnav a { font: 400 11px/1 var(--mono); letter-spacing: 0.08em; color: var(--muted); }
+  .tagnav a:hover { color: var(--blue); }
+  @media (max-width: 760px) { .wrap { padding: 0 20px 96px; } }
+</style>

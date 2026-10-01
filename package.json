@@ -1,0 +1,18 @@
+{
+  "name": "isabelleqywang-site",
+  "type": "module",
+  "private": true,
+  "scripts": {
+    "dev": "astro dev",
+    "build": "node scripts/check-photo-privacy.mjs && astro build",
+    "preview": "astro preview",
+    "check:photos": "node scripts/check-photo-privacy.mjs"
+  },
+  "dependencies": {
+    "@astrojs/rss": "^4.0.19",
+    "@astrojs/sitemap": "^3.7.4",
+    "astro": "^7.3.5",
+    "sharp": "^0.35.5",
+    "three": "^0.186.1"
+  }
+}

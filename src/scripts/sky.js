@@ -43,8 +43,8 @@ scene.add(new THREE.HemisphereLight(0x6f8fd6, 0x000000, 0.05));
 
 let ready = false;
 Promise.all([
-  tex("assets/moon/moon-color-2k.webp", true),
-  tex(small ? "assets/moon/moon-elev-1k.webp" : "assets/moon/moon-elev-2k.webp", false),
+  tex("/assets/moon/moon-color-2k.webp", true),
+  tex(small ? "/assets/moon/moon-elev-1k.webp" : "/assets/moon/moon-elev-2k.webp", false),
 ]).then(([color, elev]) => {
   moonMat.map = color;
   if (elev) {
@@ -57,7 +57,7 @@ Promise.all([
   moonMat.needsUpdate = true;
   ready = true;
   if (!small && innerWidth > 1100) {
-    tex("assets/moon/moon-color-4k.webp", true).then((hi) => {
+    tex("/assets/moon/moon-color-4k.webp", true).then((hi) => {
       if (hi) { moonMat.map = hi; moonMat.needsUpdate = true; color?.dispose(); }
     });
   }
@@ -125,9 +125,9 @@ const layerDepth = [0.25, 0.6, 1];
 /* ---------- distant galaxies (Hubble): faint, small, riding the mid star layer ---------- */
 // fx/fy place each galaxy as a fraction of the visible sky so it lands in open space on any screen
 const galaxies = [
-  { src: "assets/img/gsfc-20171208-archive-e000012-640.webp", fx: -0.72, fy: 0.6, size: 0.11, rot: 0.5, crop: 0.9 },
-  { src: "assets/img/gsfc-20171208-archive-e001151-640.webp", fx: 0.72, fy: -0.56, size: 0.085, rot: -0.3, crop: 0.7 },
-  { src: "assets/img/gsfc-20171208-archive-e001569-640.webp", fx: 0.4, fy: 0.74, size: 0.05, rot: 0, crop: 0.6 },
+  { src: "/assets/img/gsfc-20171208-archive-e000012-640.webp", fx: -0.72, fy: 0.6, size: 0.11, rot: 0.5, crop: 0.9 },
+  { src: "/assets/img/gsfc-20171208-archive-e001151-640.webp", fx: 0.72, fy: -0.56, size: 0.085, rot: -0.3, crop: 0.7 },
+  { src: "/assets/img/gsfc-20171208-archive-e001569-640.webp", fx: 0.4, fy: 0.74, size: 0.05, rot: 0, crop: 0.6 },
 ];
 const GAL_DIST = 100;
 function galaxyTexture(img, crop) {

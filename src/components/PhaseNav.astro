@@ -1,0 +1,113 @@
+---
+import { PHASES, litPath } from "../lib/phases";
+
+interface Props {
+  /** label of the current destination, e.g. "Writing" */
+  current?: string;
+}
+const { current = "Home" } = Astro.props;
+const R = 7;
+---
+
+<header class="nav" data-current={current}>
+  <a href="/" class="mark">Isabelle Wang</a>
+  <nav aria-label="Lunar phases">
+    <span class="phase-label" aria-hidden="true">{current}</span>
+    <ol class="phases">
+      {PHASES.map((p, i) => (
+        <li>
+          <a
+            href={p.href}
+            data-label={p.label}
+            data-section={p.section}
+            aria-current={p.label === current ? "page" : undefined}
+            title={`${p.name} · ${p.label}`}
+          >
+            <svg viewBox="-9 -9 18 18" width="20" height="20" aria-hidden="true">
+              <circle r={R} class="disc" />
+              {litPath(i, R) && <path d={litPath(i, R)} class="lit" />}
+              <circle r={R} class="rim" />
+            </svg>
+            <span class="sr">{p.label}</span>
+          </a>
+        </li>
+      ))}
+    </ol>
+  </nav>
+</header>
+
+<script>
+  // show the hovered phase's destination in the single label; fall back to the current one
+  const nav = document.querySelector<HTMLElement>(".nav")!;
+  const label = nav.querySelector<HTMLElement>(".phase-label")!;
+  const links = [...nav.querySelectorAll<HTMLAnchorElement>(".phases a")];
+  const show = (t?: string) => (label.textContent = t ?? nav.dataset.current ?? "");
+  links.forEach((a) => {
+    a.addEventListener("mouseenter", () => show(a.dataset.label));
+    a.addEventListener("focus", () => show(a.dataset.label));
+    a.addEventListener("mouseleave", () => show());
+    a.addEventListener("blur", () => show());
+  });
+
+  // on the home page, the phase follows the section in view
+  const tracked = links.filter((a) => a.dataset.section && document.getElementById(a.dataset.section!));
+  if (tracked.length && location.pathname === "/") {
+    const setCurrent = (a: HTMLAnchorElement) => {
+      links.forEach((l) => l.removeAttribute("aria-current"));
+      a.setAttribute("aria-current", "page");
+      nav.dataset.current = a.dataset.label;
+      show();
+    };
+    const io = new IntersectionObserver(
+      (entries) => {
+        for (const e of entries) {
+          if (!e.isIntersecting) continue;
+          const a = tracked.find((l) => l.dataset.section === e.target.id);
+          if (a) setCurrent(a);
+        }
+      },
+      { rootMargin: "-45% 0px -50% 0px" }
+    );
+    tracked.forEach((a) => io.observe(document.getElementById(a.dataset.section!)!));
+  }
+</script>
+
+<style>
+  .nav {
+    position: fixed; inset: 0 0 auto; z-index: 20;
+    display: flex; justify-content: space-between; align-items: center;
+    padding: 22px var(--gutter);
+    transition: opacity 1.6s ease, transform 1.6s ease;
+  }
+  .nav::before {
+    content: ""; position: absolute; inset: 0 0 -28px; z-index: -1; pointer-events: none;
+    background: linear-gradient(rgba(5, 7, 15, 0.92) 40%, rgba(5, 7, 15, 0));
+  }
+  :global(body.intro) .nav { opacity: 0; transform: translateY(-8px); pointer-events: none; }
+  .mark { font: 400 12px/1 var(--sans); letter-spacing: 0.18em; text-transform: uppercase; color: var(--silver); }
+  nav { display: flex; align-items: center; gap: 18px; }
+  .phase-label {
+    font: 400 10px/1 var(--mono); letter-spacing: 0.22em; text-transform: uppercase; color: var(--blue);
+    min-width: 7.5em; text-align: right;
+  }
+  .phases { list-style: none; display: flex; gap: 10px; margin: 0; padding: 0; }
+  .phases a { display: block; padding: 4px; border-radius: 50%; }
+  .phases svg { display: block; overflow: visible; }
+  .disc { fill: #0d1428; }
+  .lit { fill: var(--muted); transition: fill 0.4s ease; }
+  .rim { fill: none; stroke: var(--muted); stroke-width: 0.8; opacity: 0.6; transition: stroke 0.4s ease, opacity 0.4s; }
+  .phases a:hover .lit, .phases a:focus-visible .lit, .phases a[aria-current] .lit { fill: var(--silver); }
+  .phases a:hover .rim, .phases a:focus-visible .rim { stroke: var(--silver); opacity: 1; }
+  .phases a[aria-current] .rim { stroke: var(--blue); opacity: 1; }
+  .phases a:focus-visible { outline: 1px solid var(--blue); outline-offset: 2px; }
+  .sr { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
+
+  @media (max-width: 760px) {
+    .nav { padding: 16px 16px; }
+    .mark { display: none; }
+    .nav { justify-content: flex-end; }
+    nav { gap: 10px; width: 100%; justify-content: space-between; }
+    .phase-label { text-align: left; min-width: 0; }
+    .phases { gap: 4px; }
+  }
+</style>

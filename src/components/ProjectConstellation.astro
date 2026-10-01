@@ -1,0 +1,137 @@
+---
+// Each project is a star; lines join them into one constellation.
+// x/y are positions in percent for wide screens, mx/my for narrow ones. mag sets the star's size.
+const projects = [
+  {
+    id: "pyatlas", name: "PyAtlas", stack: "React · Cytoscape · Vite", mag: 1,
+    x: 6, y: 62, mx: 22, my: 12,
+    desc: "Point it at a Python repository and get an expandable map of its modules — folders open, edges aggregate, the layout settles itself.",
+    href: "https://github.com/isabelleqywang/PyAtlas",
+  },
+  {
+    id: "sbom", name: "Runtime-Aware SBOM", stack: "Shell · Syft · dtruss", mag: 0.85,
+    x: 26, y: 20, mx: 70, my: 28,
+    desc: "A software bill of materials that watches programs run, catching the dynamically loaded libraries static analysis never sees. NYU DTCC VIP project.",
+    href: "https://github.com/isabelleqywang/Runtime-Aware_SBOM_Generator",
+  },
+  {
+    id: "defend", name: "Ctrl + Alt + Defend", stack: "Ren'Py · Python · HTML5", mag: 0.75,
+    x: 48, y: 58, mx: 30, my: 48,
+    desc: "A HackNYU game about spotting phishing and closing suspicious pop-ups — security training that doesn't feel like training.",
+    href: "https://ctrl-alt-defend.itch.io/hacknyu2025test",
+  },
+  {
+    id: "x86", name: "x86 Assembly", stack: "Assembly", mag: 0.55,
+    x: 80, y: 14, mx: 74, my: 66,
+    desc: "Exercises from close to the metal, where every register is accounted for.",
+    href: "https://github.com/isabelleqywang/x86-assembly",
+  },
+  {
+    id: "gdg", name: "NYU GDG Website", stack: "React · Flask · SQLite", mag: 0.6,
+    x: 84, y: 86, mx: 40, my: 86,
+    desc: "A full-stack club site with REST endpoints for members and events.",
+    href: "https://github.com/isabelleqywang",
+  },
+];
+const edges: [number, number][] = [[0, 1], [1, 2], [2, 3], [2, 4]];
+---
+
+<div class="constellation" data-constellation>
+  <div class="sky">
+    {["wide", "narrow"].map((mode) => (
+      <svg class={`lines ${mode}`} viewBox="0 0 100 100" preserveAspectRatio="none" aria-hidden="true">
+        {edges.map(([a, b]) => {
+          const pa = projects[a], pb = projects[b];
+          return mode === "wide"
+            ? <line x1={pa.x} y1={pa.y} x2={pb.x} y2={pb.y} />
+            : <line x1={pa.mx} y1={pa.my} x2={pb.mx} y2={pb.my} />;
+        })}
+      </svg>
+    ))}
+    {projects.map((p) => (
+      <button
+        type="button" class:list={["star", { "l-wide": p.x > 70, "l-narrow": p.mx > 60 }]} data-id={p.id} aria-expanded="false" aria-controls={`detail-${p.id}`}
+        style={`--x:${p.x}%;--y:${p.y}%;--mx:${p.mx}%;--my:${p.my}%;--mag:${p.mag}`}
+      >
+        <span class="dot" aria-hidden="true"></span>
+        <span class="name">{p.name}</span>
+      </button>
+    ))}
+  </div>
+
+  <div class="details">
+    <p class="hint meta">Select a star.</p>
+    {projects.map((p) => (
+      <article class="detail" id={`detail-${p.id}`} hidden>
+        <h3>{p.name}</h3>
+        <p class="meta">{p.stack}</p>
+        <p class="desc">{p.desc}</p>
+        <a class="go" href={p.href} target="_blank" rel="noopener">View on {p.href.includes("github.com") ? "GitHub" : "itch.io"} ↗</a>
+      </article>
+    ))}
+  </div>
+</div>
+
+<script>
+  document.querySelectorAll<HTMLElement>("[data-constellation]").forEach((root) => {
+    const stars = [...root.querySelectorAll<HTMLButtonElement>(".star")];
+    const hint = root.querySelector<HTMLElement>(".hint")!;
+    stars.forEach((s) =>
+      s.addEventListener("click", () => {
+        const open = s.getAttribute("aria-expanded") === "true";
+        stars.forEach((o) => {
+          o.setAttribute("aria-expanded", "false");
+          root.querySelector<HTMLElement>(`#detail-${o.dataset.id}`)!.hidden = true;
+        });
+        if (!open) {
+          s.setAttribute("aria-expanded", "true");
+          root.querySelector<HTMLElement>(`#detail-${s.dataset.id}`)!.hidden = false;
+        }
+        hint.hidden = !open;
+      })
+    );
+  });
+</script>
+
+<style>
+  .constellation { display: grid; gap: 28px; }
+  .sky { position: relative; aspect-ratio: 2.4 / 1; }
+  .lines { position: absolute; inset: 0; width: 100%; height: 100%; overflow: visible; }
+  .lines line { stroke: var(--silver); stroke-width: 1; vector-effect: non-scaling-stroke; opacity: 0.18; }
+  .lines.narrow { display: none; }
+
+  .star {
+    position: absolute; left: var(--x); top: var(--y); transform: translate(-50%, -50%);
+    background: none; border: 0; color: inherit; cursor: pointer; padding: 14px;
+    display: flex; align-items: center; gap: 12px;
+  }
+  .dot {
+    width: calc(6px + 6px * var(--mag)); aspect-ratio: 1; border-radius: 50%;
+    background: radial-gradient(circle, #fff 0 30%, rgba(223, 227, 234, 0.55) 45%, transparent 72%);
+    box-shadow: 0 0 0 0 transparent; transition: box-shadow 0.4s ease;
+  }
+  .name {
+    position: absolute; left: calc(100% - 4px); white-space: nowrap;
+    font: 300 clamp(17px, 1.5vw, 21px)/1 var(--serif); color: var(--muted); transition: color 0.4s ease;
+  }
+  .star.l-wide .name { left: auto; right: calc(100% - 4px); }
+  .star:hover .name, .star:focus-visible .name { color: var(--silver); }
+  .star[aria-expanded="true"] .name { color: var(--blue); }
+  .star[aria-expanded="true"] .dot { box-shadow: 0 0 0 7px rgba(140, 180, 255, 0.0), 0 0 0 8px rgba(140, 180, 255, 0.55); }
+
+  .details { min-height: 9.5em; border-top: 1px solid var(--faint); padding-top: 18px; }
+  .detail h3 { font: 300 clamp(28px, 2.6vw, 36px)/1.1 var(--serif); color: var(--silver); }
+  .detail .meta { margin-top: 8px; }
+  .desc { margin-top: 12px; max-width: 36em; }
+  .go { display: inline-block; margin-top: 14px; color: var(--silver); border-bottom: 1px solid var(--faint); padding-bottom: 3px; }
+  .go:hover { color: var(--blue); border-color: var(--blue); }
+
+  @media (max-width: 760px) {
+    .sky { aspect-ratio: 1 / 1.15; }
+    .lines.wide { display: none; }
+    .lines.narrow { display: block; }
+    .star { left: var(--mx); top: var(--my); }
+    .star.l-wide .name { left: calc(100% - 4px); right: auto; }
+    .star.l-narrow .name { left: auto; right: calc(100% - 4px); }
+  }
+</style>

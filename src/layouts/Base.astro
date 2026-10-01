@@ -1,0 +1,58 @@
+---
+import "../styles/global.css";
+import PhaseNav from "../components/PhaseNav.astro";
+import Footer from "../components/Footer.astro";
+
+interface Props {
+  title?: string;
+  description: string;
+  /** destination shown in the phase nav */
+  current?: string;
+  image?: string;
+  type?: "website" | "article";
+  published?: Date;
+  bodyClass?: string;
+  /** extra JSON-LD object for this page */
+  jsonLd?: Record<string, unknown>;
+}
+
+const SITE = "Isabelle Wang";
+const { title, description, current, image = "/og.jpg", type = "website", published, bodyClass, jsonLd } = Astro.props;
+const fullTitle = title ? `${title} · ${SITE}` : `${SITE} — Computer Science at NYU`;
+const canonical = new URL(Astro.url.pathname, Astro.site);
+const ogImage = new URL(image, Astro.site);
+---
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>{fullTitle}</title>
+    <meta name="description" content={description} />
+    <link rel="canonical" href={canonical} />
+    <meta name="theme-color" content="#05070f" />
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+    <link rel="alternate" type="application/rss+xml" title="Isabelle Wang — Writing" href="/rss.xml" />
+    <link rel="sitemap" href="/sitemap-index.xml" />
+    <link rel="preload" href="/fonts/cormorant-garamond-latin-300-normal.woff2" as="font" type="font/woff2" crossorigin />
+
+    <meta property="og:type" content={type} />
+    <meta property="og:site_name" content={SITE} />
+    <meta property="og:title" content={title ?? SITE} />
+    <meta property="og:description" content={description} />
+    <meta property="og:url" content={canonical} />
+    <meta property="og:image" content={ogImage} />
+    <meta name="twitter:card" content="summary_large_image" />
+    {published && <meta property="article:published_time" content={published.toISOString()} />}
+    {jsonLd && <script type="application/ld+json" set:html={JSON.stringify(jsonLd)} />}
+  </head>
+  <body class={bodyClass}>
+    <slot name="before" />
+    <PhaseNav current={current} />
+    <main>
+      <slot />
+    </main>
+    <Footer />
+  </body>
+</html>
