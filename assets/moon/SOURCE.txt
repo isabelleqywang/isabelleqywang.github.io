@@ -1,0 +1,4 @@
+NASA's Scientific Visualization Studio — CGI Moon Kit
+https://svs.gsfc.nasa.gov/4720
+color: https://svs.gsfc.nasa.gov/vis/a000000/a004700/a004720/lroc_color_poles_4k.tif
+elevation: https://svs.gsfc.nasa.gov/vis/a000000/a004700/a004720/ldem_3_8bit.jpg
