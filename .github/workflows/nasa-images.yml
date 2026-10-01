@@ -1,0 +1,33 @@
+name: Fetch NASA images
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [main]
+    paths:
+      - tools/nasa.py
+      - tools/picks.txt
+      - .github/workflows/nasa-images.yml
+
+permissions:
+  contents: write
+
+jobs:
+  fetch:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - run: pip install requests pillow
+      - run: python tools/nasa.py
+      - name: Commit results
+        run: |
+          git config user.name "IsabelleQYWang"
+          git config user.email "qw2456@nyu.edu"
+          git add tools/picker.html assets || true
+          git diff --cached --quiet && exit 0
+          git commit -m "Update NASA images"
+          git pull --rebase origin main
+          git push origin main
