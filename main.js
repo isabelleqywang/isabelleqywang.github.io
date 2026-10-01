@@ -30,7 +30,7 @@ function tex(url, srgb) {
 }
 
 const seg = small ? [160, 80] : [320, 160];
-const moonMat = new THREE.MeshStandardMaterial({ roughness: 1, metalness: 0, color: 0xffffff });
+const moonMat = new THREE.MeshStandardMaterial({ roughness: 1, metalness: 0, color: 0xffffff, transparent: true });
 const moon = new THREE.Mesh(new THREE.SphereGeometry(1, ...seg), moonMat);
 moon.rotation.set(0.1, -1.9, 0.04);
 scene.add(moon);
@@ -122,6 +122,61 @@ makeLayer(Math.round(1100 * n), 110, [1.8, 3.4], [0.55, 0.95], [0.6, 2.0]);  // 
 makeLayer(Math.round(160 * n), 80, [3.0, 5.2], [0.8, 1.0], [0.8, 2.6]);     // near, bright
 const layerDepth = [0.25, 0.6, 1];
 
+/* ---------- distant galaxies (Hubble): faint, small, riding the mid star layer ---------- */
+// fx/fy place each galaxy as a fraction of the visible sky so it lands in open space on any screen
+const galaxies = [
+  { src: "assets/img/gsfc-20171208-archive-e000012-640.webp", fx: -0.72, fy: 0.6, size: 0.11, rot: 0.5, crop: 0.9 },
+  { src: "assets/img/gsfc-20171208-archive-e001151-640.webp", fx: 0.72, fy: -0.56, size: 0.085, rot: -0.3, crop: 0.7 },
+  { src: "assets/img/gsfc-20171208-archive-e001569-640.webp", fx: 0.4, fy: 0.74, size: 0.05, rot: 0, crop: 0.6 },
+];
+const GAL_DIST = 100;
+function galaxyTexture(img, crop) {
+  // centre crop, lift the black floor and fade to a soft circle so no square edge ever shows
+  const side = Math.round(Math.min(img.width, img.height) * crop), N = 256;
+  const c = document.createElement("canvas");
+  c.width = c.height = N;
+  const g = c.getContext("2d");
+  g.drawImage(img, (img.width - side) / 2, (img.height - side) / 2, side, side, 0, 0, N, N);
+  const d = g.getImageData(0, 0, N, N), px = d.data;
+  for (let y = 0; y < N; y++) for (let x = 0; x < N; x++) {
+    const i = (y * N + x) * 4, r = Math.hypot(x - N / 2, y - N / 2) / (N / 2);
+    const fall = Math.max(0, 1 - r) ** 1.6;
+    // alpha follows brightness, so the black sky around each galaxy is truly transparent
+    let peak = 0;
+    for (let k = 0; k < 3; k++) { px[i + k] = Math.min(255, Math.max(0, px[i + k] - 16) * 1.2); peak = Math.max(peak, px[i + k]); }
+    px[i + 3] = Math.min(255, peak * 1.6) * fall;
+  }
+  g.putImageData(d, 0, 0);
+  const t = new THREE.CanvasTexture(c);
+  t.colorSpace = THREE.SRGBColorSpace;
+  return t;
+}
+const galaxySprites = [];
+galaxies.forEach((gx) => {
+  const img = new Image();
+  img.onload = () => {
+    const mat = new THREE.SpriteMaterial({ map: galaxyTexture(img, gx.crop),
+      depthWrite: false, transparent: true, opacity: 0, rotation: gx.rot, toneMapped: false });
+    const sp = new THREE.Sprite(mat);
+    sp.userData = gx;
+    layers[1].add(sp);
+    galaxySprites.push(sp);
+    placeGalaxies();
+    if (reduced) { mat.opacity = 0.6; render(); }
+  };
+  img.src = gx.src;
+});
+function placeGalaxies() {
+  const hh = GAL_DIST * tanHalf, hw = hh * aspect;
+  galaxySprites.forEach((sp) => {
+    const { fx, fy, size } = sp.userData;
+    // narrow screens: pull galaxies in from the edges and keep them small
+    sp.position.set(fx * hw * (portrait() ? 0.72 : 1), fy * hh, 20 - GAL_DIST);
+    const s = size * 2 * hh * (portrait() ? 0.8 : 1);
+    sp.scale.set(s, s, 1);
+  });
+}
+
 /* ---------- framing ---------- */
 let vw = innerWidth, vh = innerHeight, aspect = vw / vh;
 const tanHalf = Math.tan(THREE.MathUtils.degToRad(camera.fov / 2));
@@ -134,6 +189,7 @@ function resize() {
   camera.aspect = aspect;
   camera.updateProjectionMatrix();
   renderer.setSize(vw, vh, false);
+  if (typeof placeGalaxies === "function") placeGalaxies();
   if (reduced) render();
 }
 addEventListener("resize", resize);
@@ -159,12 +215,18 @@ const lerp = (a, b, t) => a + (b - a) * t;
 const ease = (t) => t * t * (3 - 2 * t);
 const mix = (a, b, t) => a.map((v, i) => lerp(v, b[i], t));
 
+let moonFade = 1;
 function targetPose() {
   if (reduced) return pose(2);
   const heroRange = document.querySelector(".hero").offsetHeight - vh;
   const y = scrollY;
   if (y <= heroRange) return mix(pose(0), pose(1), ease(Math.min(1, y / heroRange)));
-  return mix(pose(1), pose(2), ease(Math.min(1, (y - heroRange) / (vh * 0.9))));
+  const p = mix(pose(1), pose(2), ease(Math.min(1, (y - heroRange) / (vh * 0.9))));
+  // let the Moon go dark as the Earthrise photograph comes up
+  const er = document.querySelector(".earthrise");
+  const t = er ? Math.min(1, Math.max(0, (y + vh - er.offsetTop) / (vh * 0.8))) : 0;
+  moonFade = 1 - ease(t);
+  return p;
 }
 
 /* ---------- intro gate: reveal the words on the first scroll / touch ---------- */
@@ -237,9 +299,12 @@ function frame() {
   camera.lookAt(camera.position.x, camera.position.y, -100);
   moon.rotation.y += dt * 0.022;
   sun.intensity = 3.4 * cam[3];
+  moonMat.opacity = lerp(moonMat.opacity, moonFade, k);
+  moon.visible = moonMat.opacity > 0.01;
   renderer.toneMappingExposure = 1.55 * f;
   uniforms.uFade.value = 0.25 + 0.75 * ease(Math.min(1, t / 2.2));
   uniforms.uTime.value = t;
+  galaxySprites.forEach((sp) => { sp.material.opacity = 0.6 * uniforms.uFade.value; });
 
   const scrollTurn = scrollY / vh;
   layers.forEach((l, i) => {
