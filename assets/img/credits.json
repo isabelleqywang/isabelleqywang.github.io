@@ -1,0 +1,42 @@
+{
+  "as08-14-2383": {
+    "slug": "as08-14-2383",
+    "title": "Apollo 8 Mission image, Earth over the horizon of the moon",
+    "center": "JSC",
+    "date": "1968-12-24",
+    "credit": "NASA",
+    "url": "https://images.nasa.gov/details/as08-14-2383",
+    "w": 3000,
+    "h": 3000
+  },
+  "GSFC_20171208_Archive_e001569": {
+    "slug": "gsfc-20171208-archive-e001569",
+    "title": "Hubble Views a Dwarf Galaxy",
+    "center": "GSFC",
+    "date": "2017-12-08",
+    "credit": "NASA",
+    "url": "https://images.nasa.gov/details/GSFC_20171208_Archive_e001569",
+    "w": 1280,
+    "h": 771
+  },
+  "GSFC_20171208_Archive_e001151": {
+    "slug": "gsfc-20171208-archive-e001151",
+    "title": "Hubble Sees Galaxies Spiraling around Leo",
+    "center": "GSFC",
+    "date": "2017-12-08",
+    "credit": "ESA/Hubble &amp; NASA, Acknowledgement: Nick Rose",
+    "url": "https://images.nasa.gov/details/GSFC_20171208_Archive_e001151",
+    "w": 1280,
+    "h": 930
+  },
+  "GSFC_20171208_Archive_e000012": {
+    "slug": "gsfc-20171208-archive-e000012",
+    "title": "Hubble's Hockey Stick Galaxy",
+    "center": "GSFC",
+    "date": "2017-12-08",
+    "credit": "ESA/Hubble &amp; NASA",
+    "url": "https://images.nasa.gov/details/GSFC_20171208_Archive_e000012",
+    "w": 4169,
+    "h": 3909
+  }
+}
