@@ -4,7 +4,7 @@ import { getPosts } from "../lib/posts";
 export async function GET(context) {
   const posts = await getPosts();
   return rss({
-    title: "Isabelle Wang — Writing",
+    title: "Isabelle Wang · Writing",
     description: "Project retrospectives, technical notes and reading notes.",
     site: context.site,
     items: posts.map((p) => ({

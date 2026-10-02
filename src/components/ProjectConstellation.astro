@@ -3,37 +3,31 @@
 // x/y are positions in percent for wide screens, mx/my for narrow ones. mag sets the star's size.
 const projects = [
   {
-    id: "pyatlas", name: "PyAtlas", stack: "React · Cytoscape · Vite", mag: 1,
-    x: 6, y: 62, mx: 22, my: 12,
-    desc: "Point it at a Python repository and get an expandable map of its modules — folders open, edges aggregate, the layout settles itself.",
+    id: "pyatlas", name: "PyAtlas", stack: "React · Cytoscape.js · dagre", mag: 1,
+    x: 6, y: 64, mx: 22, my: 14,
+    desc: "Turns the module structure of a Python repository into an interactive dependency graph: compound folder and file nodes that expand and collapse, import edges aggregated across collapsed subtrees, and an animated dagre layout that keeps your mental map stable between states.",
     href: "https://github.com/isabelleqywang/PyAtlas",
   },
   {
-    id: "sbom", name: "Runtime-Aware SBOM", stack: "Shell · Syft · dtruss", mag: 0.85,
-    x: 26, y: 20, mx: 70, my: 28,
-    desc: "A software bill of materials that watches programs run, catching the dynamically loaded libraries static analysis never sees. NYU DTCC VIP project.",
+    id: "sbom", name: "Runtime Aware SBOM", stack: "Shell · Syft · otool · dtruss", mag: 0.85,
+    x: 30, y: 20, mx: 72, my: 38,
+    desc: "A software bill of materials generator that goes past static analysis. It pairs Syft's package inventory with otool and dtruss tracing to capture libraries loaded at runtime through dlopen() and plugins, exactly where Log4Shell class vulnerabilities like to hide, and emits structured JSON. Built for the NYU DTCC VIP program.",
     href: "https://github.com/isabelleqywang/Runtime-Aware_SBOM_Generator",
   },
   {
     id: "defend", name: "Ctrl + Alt + Defend", stack: "Ren'Py · Python · HTML5", mag: 0.75,
-    x: 48, y: 58, mx: 30, my: 48,
-    desc: "A HackNYU game about spotting phishing and closing suspicious pop-ups — security training that doesn't feel like training.",
+    x: 54, y: 62, mx: 28, my: 64,
+    desc: "A cybersecurity training game built at HackNYU 2025. Players work through interactive scenarios, flagging phishing attempts and shutting down malicious pop ups. Security awareness training that people actually finish.",
     href: "https://ctrl-alt-defend.itch.io/hacknyu2025test",
   },
   {
-    id: "x86", name: "x86 Assembly", stack: "Assembly", mag: 0.55,
-    x: 80, y: 14, mx: 74, my: 66,
-    desc: "Exercises from close to the metal, where every register is accounted for.",
-    href: "https://github.com/isabelleqywang/x86-assembly",
-  },
-  {
     id: "gdg", name: "NYU GDG Website", stack: "React · Flask · SQLite", mag: 0.6,
-    x: 84, y: 86, mx: 40, my: 86,
-    desc: "A full-stack club site with REST endpoints for members and events.",
+    x: 84, y: 26, mx: 68, my: 88,
+    desc: "Full stack website for the NYU Google Developer Group: a React frontend over a Flask REST API, with SQLite backing member records and event listings.",
     href: "https://github.com/isabelleqywang",
   },
 ];
-const edges: [number, number][] = [[0, 1], [1, 2], [2, 3], [2, 4]];
+const edges: [number, number][] = [[0, 1], [1, 2], [2, 3]];
 ---
 
 <div class="constellation" data-constellation>

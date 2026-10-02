@@ -7,7 +7,7 @@ const { posts } = Astro.props;
 ---
 
 {posts.length === 0 ? (
-  <p class="empty">Nothing here yet — the first entry is still being written.</p>
+  <p class="empty">Nothing here yet. The first entry is still being written.</p>
 ) : (
   <ol class="posts">
     {posts.map((p) => (

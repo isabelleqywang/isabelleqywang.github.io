@@ -9,13 +9,13 @@ const tags = [...new Set(posts.flatMap((p) => p.data.tags))].sort();
 
 <Base
   title="Writing"
-  description="Writing by Isabelle Wang — project retrospectives, technical notes on backend engineering, and reading notes."
+  description="Writing by Isabelle Wang: project retrospectives, technical notes on backend engineering, and reading notes."
   current="Writing"
 >
   <header class="page-head">
     <p class="label">Last Quarter · Writing</p>
     <h1>Writing</h1>
-    <p>Project retrospectives, technical notes and reading notes. Also available as an <a class="u" href="/rss.xml">RSS feed</a>.</p>
+    <p>Project retrospectives, technical notes, reflections and reading notes. Also available as an <a class="u" href="/rss.xml">RSS feed</a>.</p>
     {tags.length > 0 && (
       <nav class="tagnav" aria-label="Topics">
         {tags.map((t) => <a href={`/writing/tags/${t}/`}>{tagLabel(t)}</a>)}

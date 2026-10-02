@@ -1,7 +1,7 @@
 ---
 title: "PyAtlas, so far: drawing a map of a Python codebase"
 date: 2026-09-30
-summary: "A retrospective on the first five days of PyAtlas — why the collapse logic lives in pure functions, how one idea (the representative) handles both nodes and edges, and what I'd do differently."
+summary: "A retrospective on the first five days of PyAtlas: why the collapse logic lives in pure functions, how one idea (the representative) handles both nodes and edges, and what I'd do differently."
 tags: [project-retrospective, react, graphs]
 ---
 
@@ -13,7 +13,7 @@ A repository is a tree (folders contain files) with a graph laid over it (files 
 
 ## One idea: the representative
 
-Every node on screen stands in for some set of nodes underneath it. I gave that a name — the **representative** — and defined it as the first collapsed folder you meet walking down from the top of a node's ancestor chain:
+Every node on screen stands in for some set of nodes underneath it. I gave that a name, the **representative**, and defined it as the first collapsed folder you meet walking down from the top of a node's ancestor chain:
 
 ```js
 export function representative(id, parentOf, expanded) {
@@ -31,7 +31,7 @@ Once that exists, two features fall out almost for free:
 
 ## Keeping the logic boring
 
-All of the collapse logic lives in `graphLogic.js` as pure functions — no React, no Cytoscape. That made it trivial to unit-test and, just as importantly, easy to explain. The React component only diffs what *should* be on screen against what *is*, adds and removes elements, and asks the layout to animate.
+All of the collapse logic lives in `graphLogic.js` as pure functions, with no React and no Cytoscape. That made it trivial to unit-test and, just as importantly, easy to explain. The React component only diffs what *should* be on screen against what *is*, adds and removes elements, and asks the layout to animate.
 
 ## The part that took longest
 

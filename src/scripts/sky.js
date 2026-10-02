@@ -195,7 +195,7 @@ function resize() {
 addEventListener("resize", resize);
 resize();
 
-/* poses: [cam x, cam y, cam z, light] — the camera looks straight ahead, so moving it slides the moon */
+/* poses: [cam x, cam y, cam z, light]; the camera looks straight ahead, so moving it slides the moon */
 function pose(stage) {
   const z0 = distFor(portrait() ? 0.78 : 0.62);
   if (stage === 0) return [0, 0, z0, 1];

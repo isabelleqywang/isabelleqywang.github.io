@@ -16,7 +16,7 @@ const person = {
 ---
 
 <Base
-  description="Qiuyi (Isabelle) Wang — Computer Science at NYU. Backend and full-stack developer, amateur astrophotographer, occasional writer."
+  description="Qiuyi (Isabelle) Wang, Computer Science at NYU. Backend and full-stack engineer working on APIs, data modeling and developer tooling. Amateur astrophotographer and occasional writer."
   current="Home"
   bodyClass="intro"
   jsonLd={person}
@@ -32,7 +32,7 @@ const person = {
       <div class="hero-copy">
         <p class="label">Computer Science · New York University</p>
         <h1>Qiuyi <em>(Isabelle)</em> Wang</h1>
-        <p class="lede">Backend &amp; full-stack developer building systems that hold up under real load.</p>
+        <p class="lede">Backend and full stack engineer building systems that hold up under real load.</p>
       </div>
       <button class="hint" type="button" aria-label="Begin">
         <span>scroll</span><i></i>
@@ -44,14 +44,15 @@ const person = {
     <div class="side"><span class="num">01</span><h2>About</h2></div>
     <div class="body">
       <p class="big">
-        I'm a Computer Science student at New York University, class of 2028. I like the parts of software
-        most people never see — APIs, data models, pipelines, and the quiet debugging that keeps production standing.
+        I'm a Computer Science student at New York University, class of 2028, and I build backends: API design,
+        relational and document data modeling, automation pipelines and the developer tooling around them.
+        I care about clean contracts between systems and code that is still readable six months later.
         After dark I point a camera at the sky.
       </p>
       <dl class="facts">
         <div><dt>Based in</dt><dd>New York</dd></div>
         <div><dt>Studying</dt><dd>B.A. Computer Science, NYU</dd></div>
-        <div><dt>Focus</dt><dd>Backend · Full-stack · Security</dd></div>
+        <div><dt>Focus</dt><dd>Backend · Full stack · Security</dd></div>
       </dl>
       <p class="instruments"><b>Instruments</b>Python, Java, TypeScript, C, SQL · Django, Flask, React, Node.js · Docker, MySQL, MongoDB · MPI, OpenMP, CUDA</p>
     </div>
@@ -63,27 +64,27 @@ const person = {
       <li>
         <p class="meta">Summer 2026</p>
         <h3>Backend Intern <span>GBCS Group</span></h3>
-        <p>Spent the summer teaching a Django carbon-reporting service to say “no” politely — a validation framework so every error arrives with good manners. Also caught a bug on its way out the door to a client, which is the quietest kind of heroism.</p>
+        <p>Designed an object oriented response and validation layer for a Django service that generates greenhouse gas reports: seven composable utilities behind a four stage pipeline, so every refactored endpoint now speaks the same error contract. Modeled the Django ORM schema for a new emissions tracking module and coordinated its migrations across environments with data integrity intact. Carbon accounting, it turns out, is mostly schema design.</p>
       </li>
       <li>
         <p class="meta">Spring 2026</p>
         <h3>Teaching Assistant <span>NYU Courant</span></h3>
-        <p>Held office hours for 200+ students, where I learned that recursion is best explained twice and linked lists three times. Read a great deal of student code and came out with gentle but firm opinions about Big-O and variable names.</p>
+        <p>Ran weekly office hours for 200+ students across Intro to CS and Data Structures and Algorithms, turning recursion, linked lists and binary search trees into strategies people could actually apply to a problem set. Reviewed code with feedback on time and space complexity, algorithmic efficiency and correctness. Explaining pointer manipulation five different ways in one afternoon is lowkey the best interview prep there is.</p>
       </li>
       <li>
         <p class="meta">Fall 2025</p>
         <h3>Student Technician <span>NYU Gallatin IT</span></h3>
-        <p>Wrote a small Python pipeline that quietly took over 12 hours a week of spreadsheet copy-pasting. Nobody misses those hours — least of all the person who used to spend them.</p>
+        <p>Built a Python ETL job that pulls daily form submissions from a REST API, normalizes them and writes structured reports to Google Sheets. It replaced 12 hours a week of manual data processing for the team.</p>
       </li>
       <li>
         <p class="meta">Fall 2025</p>
-        <h3>Full-Stack Developer <span>HackNYU</span></h3>
-        <p>Started on the frontend making things move nicely for 900+ hackers, then wandered into the backend when MongoDB needed a friend. Turns out I like both sides of an API; they just argue differently.</p>
+        <h3>Full Stack Developer <span>HackNYU</span></h3>
+        <p>Shipped animated, responsive UI components in TypeScript for the HackNYU 2026 site, then moved to the backend when the team needed one: configured the MongoDB connection layer and wrote the services that store and serve past projects and sponsor data. Worked in sprints with six engineers and four designers on a site used by 900+ attendees. Full stack, but make it situational.</p>
       </li>
       <li>
         <p class="meta">Summer 2025</p>
         <h3>Backend Developer Intern <span>ExamMaster</span></h3>
-        <p>Built the APIs behind an online exam platform, and fixed the audio bug that left 20+ students listening to silence during their listening section. Exams are hard enough without that being part of the test.</p>
+        <p>Designed and deployed RESTful APIs in Flask and Node.js over MySQL and MongoDB, including client and server authentication, for a platform that delivers timed exams and stores results for 50+ users. Refactored the core request path and API response handling so the site stayed responsive during live exam sessions.</p>
       </li>
     </ol>
   </section>
@@ -100,14 +101,14 @@ const person = {
     <ul class="body further">
       <li><a href="/voyages/"><span class="t">Voyages</span><span class="meta">Full Moon</span><span class="d">Places I've been, each photograph a star, joined in the order I found them.</span></a></li>
       <li><a href="/observatory/"><span class="t">Observatory</span><span class="meta">Waning Gibbous</span><span class="d">The night sky through my own lens.</span></a></li>
-      <li><a href="/writing/"><span class="t">Writing</span><span class="meta">Last Quarter</span><span class="d">Project retrospectives, technical notes and reading notes.</span></a></li>
+      <li><a href="/writing/"><span class="t">Writing</span><span class="meta">Last Quarter</span><span class="d">Project retrospectives, technical notes, reflections and reading notes.</span></a></li>
     </ul>
   </section>
 
   <section id="contact" class="block contact">
     <div class="side"><span class="num">05</span><h2>Contact</h2></div>
     <div class="body">
-      <p class="big">Open to internships and new-grad roles. Say hello — my replies take a little longer than light from the Moon, but not by much.</p>
+      <p class="big">Open to internships and new-grad roles. Say hello. My replies take a little longer than light from the Moon, but not by much.</p>
       <ul class="links">
         <li><a href="mailto:isabellewang@nyu.edu">isabellewang@nyu.edu</a></li>
         <li><a href="https://www.linkedin.com/in/qiuyiwangisabelle/" target="_blank" rel="noopener">LinkedIn</a></li>

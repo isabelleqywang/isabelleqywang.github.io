@@ -1,6 +1,6 @@
 # isabelleqywang.github.io
 
-Personal site of Qiuyi (Isabelle) Wang — built with [Astro](https://astro.build) and deployed to GitHub Pages by `.github/workflows/deploy.yml` on every push to `main`.
+Personal site of Qiuyi (Isabelle) Wang, built with [Astro](https://astro.build) and deployed to GitHub Pages by `.github/workflows/deploy.yml` on every push to `main`.
 
 ```sh
 npm install
@@ -27,7 +27,7 @@ Add a Markdown file to `content/posts/`. The file name becomes the URL (`my-post
 ---
 title: "Post title"
 date: 2026-10-01
-summary: "One or two sentences — used in the list, RSS and search results."
+summary: "One or two sentences, used in the list, RSS and search results."
 tags: [technical-notes, backend]
 draft: false
 ---
@@ -43,7 +43,7 @@ Set `draft: true` to keep a post out of the published site. The RSS feed (`/rss.
 
 ## Adding an astrophotograph
 
-Put the image (JPG/PNG/WebP, any size — it is resized automatically) in `content/observatory/`, next to a Markdown file with the same name:
+Put the image (JPG/PNG/WebP, any size; it is resized automatically) in `content/observatory/`, next to a Markdown file with the same name:
 
 ```md
 ---
@@ -71,16 +71,16 @@ date: 2025-04-03
 photo: ./kyoto.jpg
 alt: Lanterns along a narrow street at dusk
 caption: Optional one-line caption.
-x: 40   # optional position in the sky, 0–100
+x: 40   # optional position in the sky, 0 to 100
 y: 30
 ---
 ```
 
-Delete the `sample-*` files when you add your own.
+The current photos are placeholders; replace them with your own and keep the same file names, or add new ones.
 
 ## Photos and privacy
 
-The repository is public, so **original photo files can be downloaded by anyone** — not just the resized versions on the site. Phones and cameras often embed GPS coordinates.
+The repository is public, so **original photo files can be downloaded by anyone**, not just the resized versions on the site. Phones and cameras often embed GPS coordinates.
 
 - Export photos without location before adding them (iPhone: Share → Options → turn off Location; Lightroom: Export → Metadata → Remove Location Info).
 - `npm run build` (and the deploy workflow) runs `scripts/check-photo-privacy.mjs`, which **fails the deploy** and names any photo in `content/` that still contains GPS data.

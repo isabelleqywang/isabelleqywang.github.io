@@ -18,7 +18,7 @@ interface Props {
 
 const SITE = "Isabelle Wang";
 const { title, description, current, image = "/og.jpg", type = "website", published, bodyClass, jsonLd } = Astro.props;
-const fullTitle = title ? `${title} · ${SITE}` : `${SITE} — Computer Science at NYU`;
+const fullTitle = title ? `${title} · ${SITE}` : `${SITE} · Computer Science at NYU`;
 const canonical = new URL(Astro.url.pathname, Astro.site);
 const ogImage = new URL(image, Astro.site);
 ---
@@ -33,7 +33,7 @@ const ogImage = new URL(image, Astro.site);
     <link rel="canonical" href={canonical} />
     <meta name="theme-color" content="#05070f" />
     <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
-    <link rel="alternate" type="application/rss+xml" title="Isabelle Wang — Writing" href="/rss.xml" />
+    <link rel="alternate" type="application/rss+xml" title="Isabelle Wang · Writing" href="/rss.xml" />
     <link rel="sitemap" href="/sitemap-index.xml" />
     <link rel="preload" href="/fonts/cormorant-garamond-latin-300-normal.woff2" as="font" type="font/woff2" crossorigin />
 

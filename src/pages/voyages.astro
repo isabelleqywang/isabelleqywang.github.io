@@ -40,7 +40,7 @@ const fmt = (d: Date) => d.toLocaleDateString("en-US", { month: "short", year: "
       {placed.map((p, i) => (
         <button
           type="button" class="stop" data-index={i} style={`--x:${p.x};--y:${p.y}`}
-          aria-label={`${p.data.place}, ${fmt(p.data.date)} — open photograph`}
+          aria-label={`${p.data.place}, ${fmt(p.data.date)} · open photograph`}
         >
           <span class="star" aria-hidden="true"></span>
           <span class="tag" aria-hidden="true"><span class="place">{p.data.place}</span><span class="meta">{fmt(p.data.date)}</span></span>
@@ -141,7 +141,7 @@ const fmt = (d: Date) => d.toLocaleDateString("en-US", { month: "short", year: "
     transition: transform 1.4s cubic-bezier(0.65, 0, 0.2, 1);
     will-change: transform;
   }
-  /* soft, cold nebula — the only "painted" layer in the site */
+  /* soft, cold nebula: the only "painted" layer in the site */
   .nebula {
     position: absolute; inset: -10%;
     background:

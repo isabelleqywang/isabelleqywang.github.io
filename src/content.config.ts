@@ -41,7 +41,7 @@ const voyages = defineCollection({
       photo: image(),
       alt: z.string(),
       caption: z.string().optional(),
-      // optional position in the sky, 0–100 on each axis; omitted stops are placed automatically
+      // optional position in the sky, 0 to 100 on each axis; omitted stops are placed automatically
       x: z.number().min(0).max(100).optional(),
       y: z.number().min(0).max(100).optional(),
     }),
