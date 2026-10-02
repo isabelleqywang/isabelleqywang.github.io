@@ -29,6 +29,6 @@ The refactored endpoints now share one error contract, so client code can handle
 
 What I'm proud of is that I treated consistency as a feature rather than a cleanup task. Nobody files a ticket asking for "the same error shape everywhere", but everyone benefits from it, and I could explain that value to people who were not deep in the code.
 
-What I'd do differently: write the contract down as documentation before writing the utilities. I designed it in code first and documented it after, and the documentation would have caught two naming debates earlier.
+What I'd do differently: write the contract down as documentation before writing the utilities. I designed it in code first and documented it after, and writing it down first would have settled naming questions sooner.
 
 Also, carbon accounting is mostly schema design. I did not expect to enjoy that as much as I did.
