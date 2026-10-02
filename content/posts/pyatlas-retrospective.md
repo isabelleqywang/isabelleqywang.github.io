@@ -5,8 +5,6 @@ summary: "A retrospective on the first five days of PyAtlas — why the collapse
 tags: [project-retrospective, react, graphs]
 ---
 
-*Sample post — written as a template from the PyAtlas repository. Replace it with your own retrospective.*
-
 Opening an unfamiliar Python repository usually means a few minutes of clicking through folders, trying to build a mental map of what imports what. [PyAtlas](https://github.com/isabelleqywang/PyAtlas) is an attempt to draw that map for you: point it at a repository and get a graph of its modules that you can open and close folder by folder.
 
 ## The shape of the problem

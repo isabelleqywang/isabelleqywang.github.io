@@ -10,4 +10,4 @@ exposure: Sample entry — e.g. 60 × 120 s, gain 100
 credit: ESA/Hubble & NASA
 ---
 
-A sample entry to show the layout. Replace this file and its image with one of your own photographs.
+Any notes i write below the frontmatter appear as the photograph's description.

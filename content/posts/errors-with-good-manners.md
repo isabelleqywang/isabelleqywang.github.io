@@ -5,8 +5,6 @@ summary: "Notes on designing API error responses that clients can rely on — on
 tags: [technical-notes, backend, api-design]
 ---
 
-*Sample post — a technical note written as a template. Replace it with your own.*
-
 Most of an API's personality shows up when something goes wrong. A good error response tells a client *what* failed, *where*, and *whether trying again could help* — and it does so the same way every time.
 
 ## One envelope, everywhere

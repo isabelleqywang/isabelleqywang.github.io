@@ -10,4 +10,4 @@ exposure: Sample entry
 credit: ESA/Hubble & NASA, acknowledgement Nick Rose
 ---
 
-Another sample entry. Any notes you write below the frontmatter appear as the photograph's description.
+Any notes i write below the frontmatter appear as the photograph's description.
